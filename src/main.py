@@ -47,6 +47,9 @@ class Src:
     comment_close = r"\*/"
     line_comment = "//"
     isomorphic = "~="
+    # ~ over a text. Usage ~^R , ~^{text}
+    tilde_over = "~\^"
+    overline = "\-\^"
 
 
 class Tar:
@@ -88,8 +91,10 @@ def main():
         Operation(OpType.replace, "==", r"\\equiv"),
         # equals symbol with ~ (isomorphism)
         Operation(OpType.replace, Src.isomorphic, "\\simeq"),
-        # ~ under a text
-        Operation(OpType.replace, "~", r"\\widetilde "),
+        # ~ over a text
+        Operation(OpType.replace, Src.tilde_over, r"\\widetilde "),
+        # line over a text
+        Operation(OpType.replace, Src.overline, r"\\overline "),
         # plus-minus symbol
         Operation(OpType.replace, r"\+\-", r"\\pm"),
         # TODO: division
