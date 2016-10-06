@@ -94,7 +94,7 @@ def main():
         # equals sign with three lines
         Operation(OpType.replace, "==", r"\\equiv"),
         # equals symbol with ~ (isomorphism)
-        Operation(OpType.replace, Src.isomorphic, "\\simeq"),
+        Operation(OpType.replace, Src.isomorphic, "\\cong"),
         # ~ over a text
         Operation(OpType.replace, Src.tilde_over, r"\\widetilde "),
         # line over a text
