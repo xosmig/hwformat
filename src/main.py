@@ -46,6 +46,7 @@ class Src:
     comment_open = r"/\*"
     comment_close = r"\*/"
     line_comment = "//"
+    isomorphic = "~="
 
 
 class Tar:
@@ -85,7 +86,9 @@ def main():
         Operation(OpType.replace, "<\-", r"\\leftarrow"),
         # equals sign with three lines
         Operation(OpType.replace, "==", r"\\equiv"),
-        # ~ under a text. Particularly ~= is an isomorphism symbol
+        # equals symbol with ~ (isomorphism)
+        Operation(OpType.replace, Src.isomorphic, "\\simeq"),
+        # ~ under a text
         Operation(OpType.replace, "~", r"\\widetilde "),
         # plus-minus symbol
         Operation(OpType.replace, r"\+\-", r"\\pm"),
