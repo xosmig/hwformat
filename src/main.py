@@ -46,15 +46,19 @@ class Src:
     comment_open = r"/\*"
     comment_close = r"\*/"
     line_comment = "//"
+    # isomorphic symbol
     isomorphic = "~="
-    # ~ over a text. Usage ~^R , ~^{text}
-    tilde_over = "~\^"
-    overline = "\-\^"
+    # ~^{text} --> \widetile{text} (~ over the text)
+    tilde_over = r"~\^"
+    # -^{text} --> \overline{text}
+    overline = r"\-\^"
+    # \!in --> \not\in
+    not_in = r"\\!in"
 
 
 class Tar:
-    math_open = "\\("
-    math_close = "\\)"
+    math_open = r"\("
+    math_close = r"\)"
     line_comment = r"%"
     comment_open = r"\\ignore{"
     comment_close = r"}"
@@ -97,6 +101,8 @@ def main():
         Operation(OpType.replace, Src.overline, r"\\overline "),
         # plus-minus symbol
         Operation(OpType.replace, r"\+\-", r"\\pm"),
+        # not-in operator
+        Operation(OpType.replace, Src.not_in, r"\\not\\in"),
         # TODO: division
         # -e 's/$(LEFT)\/$(RIGHT)/\\frac{\1}{\2}/g' \
         # FIXME: can be used only in math mode:

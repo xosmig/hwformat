@@ -5,12 +5,12 @@
 
 // the whole line is commented => :)
 
-Hello, /*comment*/ World!
+Hello, /*inline comment*/ World!
 
 ~^{Текст под волной}, ~^R
 
 -^{Текст под чертой}, -^R
 
-x !\in V
+x \!in V
 
 (a != b) ~= (a /= b)
