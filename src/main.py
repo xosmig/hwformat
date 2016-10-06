@@ -18,24 +18,28 @@ FORMAT = "hw"
 
 
 class OpType(Enum):
+    # Behaves like sed 's/pattern/dst/g'.
     replace = 1
+    # Behaves like sed '/pattern/d'. Removes line if pattern is found.
     remove = 2
 
 
 class Operation:
-    def __init__(self, tp, src, dst=""):
+    def __init__(self, tp, pattern, dst=""):
         self.type = tp
-        self.src = src
+        self.pattern = re.compile(pattern)
         self.dst = dst
 
     def do(self, line):
         if self.type == OpType.replace:
-            line = re.sub(self.src, self.dst, line)
+            line = self.pattern.sub(self.dst, line)
+        elif self.type == OpType.remove:
+            if self.pattern.search(line) is not None:
+                line = ""
         return line
 
 
 class Src:
-    # Just random characters for avoiding collisions
     raw = "@"
     non_math_open = r"\[\{"
     non_math_close = r"\}\]"
@@ -92,7 +96,7 @@ def main():
         Operation(OpType.replace, Src.comment_close, Tar.comment_close + Tar.math_open),
         # multiply
         Operation(OpType.replace, r"\*", r"\\cdot"),
-        # non-math inline:
+        # non-math block inline:
         Operation(OpType.replace, Src.non_math_open, Tar.math_close),
         Operation(OpType.replace, Src.non_math_close, Tar.math_open),
     ]
