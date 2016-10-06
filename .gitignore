@@ -1,4 +1,5 @@
-.idea
 *.aux
 *.log
-*.iml
+workspace.xml
+tasks.xml
+build
