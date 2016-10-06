@@ -83,9 +83,9 @@ def main():
         # arrows
         Operation(OpType.replace, "\->", r"\\rightarrow"),
         Operation(OpType.replace, "<\-", r"\\leftarrow"),
-        # equivalence with three lines
+        # equals sign with three lines
         Operation(OpType.replace, "==", r"\\equiv"),
-        # ~ under symbol text. Particularly ~= is an isomorphism symbol
+        # ~ under a text. Particularly ~= is an isomorphism symbol
         Operation(OpType.replace, "~", r"\\widetilde "),
         # plus-minus symbol
         Operation(OpType.replace, r"\+\-", r"\\pm"),
