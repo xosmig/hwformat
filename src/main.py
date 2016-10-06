@@ -50,8 +50,6 @@ class Src:
     # ~ over a text. Usage ~^R , ~^{text}
     tilde_over = "~\^"
     overline = "\-\^"
-    # not operator. examples: != !\in
-    not_op = "!"
 
 
 class Tar:
@@ -80,9 +78,8 @@ def main():
         # warning: <=> should be parsed before => and <=
         Operation(OpType.replace, "<=>", r"\\Leftrightarrow"),
         Operation(OpType.replace, "=>", r"\\Rightarrow"),
-        # not operator. examples: != !\in
-        Operation(OpType.replace, Src.not_op, r"\\not"),
-        # not_equal operator
+        # two kinds of not_equal operators
+        Operation(OpType.replace, "!=", r"\\neq"),
         Operation(OpType.replace, "/=", r"\\neq"),
         # comparison operators
         Operation(OpType.replace, "<=", r"\\le"),
