@@ -11,8 +11,9 @@
 # TODO: good default header
 # TODO: inline comments
 # FIXME: problem with spaces in math mode
-#   possible solution: interpret all spaces as spaces. Don't let latex remove them.
-#   m.b. that's ok.
+#   possible solutions:
+#   + m.b. that's ok.
+#   + interpret all spaces as spaces and don't let latex remove them.
 
 import re
 import sys
@@ -86,17 +87,14 @@ def main():
                     line = op.do(line)
 
                 if line.startswith(patterns.RAW):
-                    line = line[len(patterns.RAW):]  # cut the raw_operator out
+                    # cut the raw_operator out
+                    line = line[len(patterns.RAW):]
                 elif line != "\n" and not line.startswith(target.LINE_COMMENT):
                     # if line isn't empty nor comment:
 
                     for op in OPERATIONS_MATH:
                         line = op.do(line)
 
-                    # TODO: header support
-                    # if is_header(line):
-                    #     line = re.sub(r"^(#+)", r"\1" + target.math_open, line)
-                    # else:
                     line = target.MATH_OPEN + line
 
                     # place close_math operator before end of line
