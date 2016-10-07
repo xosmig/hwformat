@@ -13,4 +13,6 @@ Hello, World!
 
 x \in U, x \!in V
 
+A \subset B, A \!subset C
+
 (a != b) ~= (a /= b)

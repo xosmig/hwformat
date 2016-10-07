@@ -55,8 +55,8 @@ OPERATIONS_MATH = [
     Operation(OpType.replace, patterns.OVERLINE, r"\\overline "),
     # plus-minus symbol
     Operation(OpType.replace, r"\+\-", r"\\pm"),
-    # not-in operator
-    Operation(OpType.replace, patterns.NOT_IN, r"\\not\\in"),
+    # not operator
+    Operation(OpType.replace, "\\\\" + patterns.NOT, r"\\not\\"),
     # TODO: division
     # -e 's/$(LEFT)\/$(RIGHT)/\\frac{\1}{\2}/g' \
     # multiply
