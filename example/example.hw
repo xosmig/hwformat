@@ -1,15 +1,15 @@
 
 Привет мир /= variable <=> [[1 + 2 / 3]]
 
-@\section{Raw $latex \ge >=$}
+@Raw $latex <=$
 
 // the whole line is commented => :)
 
-Hello, /*inline comment*/ World!
+Hello, World!
 
-~^{Текст под волной}, ~^R
+~^{R красивое:}\ ~^R
 
--^{Текст под чертой}, -^R
+-^{R с чертой:}\ -^R
 
 x \in U, x \!in V
 

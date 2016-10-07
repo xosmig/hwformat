@@ -1,5 +1,10 @@
-\documentclass[12pt,a4paper]{scrartcl}
+HELP_MESSAGE = r"""
+TODO:
+Heeeeeelp!
+"""
 
+DEFAULT_HEADER = r"""
+\documentclass[12pt,a4paper]{scrartcl}
 \usepackage[utf8]{inputenc}
 \usepackage[english,russian]{babel}
 \usepackage{indentfirst}
@@ -8,10 +13,10 @@
 \usepackage{amssymb}
 \usepackage{listings}
 
-\def\Q{\mathbb{Q}}       %
-\def\Z{\mathbb{Z}}       %
-\def\N{\mathbb{N}}       %
-\def\R{\mathbb{R}}       %
+\def\Q{\mathbb{Q}}
+\def\Z{\mathbb{Z}}
+\def\N{\mathbb{N}}
+\def\R{\mathbb{R}}
 
 \def\inf{\t{+}\infty}    % +inf
 \def\O{\mathcal{O}}      %
@@ -59,3 +64,4 @@
 
 \def\A{\forall}
 \def\E{\exists\;}
+"""

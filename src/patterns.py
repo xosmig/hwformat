@@ -12,3 +12,4 @@ TILDE_OVER = r"~\^"
 OVERLINE = r"\-\^"
 # \!in --> \not\in
 NOT_IN = r"\\!in"
+RUS_WORD = "([ ]?[а-яА-ЯёЁ]+[\-:]?[ ]?)"

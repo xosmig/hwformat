@@ -1,19 +1,24 @@
 
-# TODO: latex header
-# TODO: convert to tex
+# TODO: custom latex header support
 # TODO: convert to pdf
+#   possible solution: use subprocess
 # TODO: parsing command line arguments
 # TODO: headers (#)
 # TODO: lists (enumerated and not enumerated, nested)
 # TODO: division (common, nested)
 # TODO: help message
-# TODO: complex example
+# TODO: complex example with definition
 # TODO: good default header
+# TODO: inline comments
+# FIXME: problem with spaces in math mode
+#   possible solution: interpret all spaces as spaces. Don't let latex remove them.
+#   m.b. that's ok.
 
 import re
 import sys
 import patterns
 import target
+import resources
 from operations import OpType, Operation
 
 FORMAT = "hw"
@@ -27,7 +32,7 @@ OPERATIONS = [
 
 OPERATIONS_MATH = [
     # wrap russian in text block:
-    Operation(OpType.replace, "( ?[а-яА-ЯёЁ]+ ?)", r"\\text{\1}\\allowbreak"),
+    Operation(OpType.replace, patterns.RUS_WORD, r"\\text{\1}\\allowbreak"),
     # warning: <=> should be parsed before => and <=
     Operation(OpType.replace, "<=>", r"\\Leftrightarrow"),
     Operation(OpType.replace, "=>", r"\\Rightarrow"),
@@ -54,9 +59,6 @@ OPERATIONS_MATH = [
     Operation(OpType.replace, patterns.NOT_IN, r"\\not\\in"),
     # TODO: division
     # -e 's/$(LEFT)\/$(RIGHT)/\\frac{\1}{\2}/g' \
-    # FIXME: can be used only in math mode:
-    Operation(OpType.replace, patterns.COMMENT_OPEN, target.MATH_CLOSE + target.COMMENT_OPEN),
-    Operation(OpType.replace, patterns.COMMENT_CLOSE, target.COMMENT_CLOSE + target.MATH_OPEN),
     # multiply
     Operation(OpType.replace, r"\*", r"\\cdot"),
     # non-math block inline:
@@ -70,10 +72,15 @@ def main():
         print("TODO: Help message")
         exit(1)
 
-    file_path = sys.argv[1]
+    source_path = sys.argv[1]
+    dest_path = re.sub(r"\." + FORMAT, r".tex", source_path)  # FIXME
+    header = resources.DEFAULT_HEADER
 
-    with open(file_path, "r") as source:
-        with open(re.sub(r"\." + FORMAT, r".tex", file_path), "w") as dest:
+    with open(dest_path, "w") as dest:
+        dest.write(header)
+        dest.write("\n\\begin{document}\n")
+
+        with open(source_path, "r") as source:
             for line in source.readlines():
                 for op in OPERATIONS:
                     line = op.do(line)
@@ -96,6 +103,8 @@ def main():
                     line = re.sub("\n$", target.MATH_CLOSE + r"\n", line)
 
                 dest.write(line)
+
+        dest.write("\n\\end{document}\n")
 
 
 if __name__ == "__main__":
