@@ -32,35 +32,35 @@ OPERATIONS = [
 
 OPERATIONS_MATH = [
     # wrap russian in text block:
-    Operation(OpType.replace, patterns.RUS_WORD, r"\\text{\1}\\allowbreak"),
+    Operation(OpType.replace, patterns.RUS_WORD, r"\\text{\1}\\allowbreak "),
     # warning: <=> should be parsed before => and <=
-    Operation(OpType.replace, "<=>", r"\\Leftrightarrow"),
-    Operation(OpType.replace, "=>", r"\\Rightarrow"),
+    Operation(OpType.replace, "<=>", r"\\Leftrightarrow "),
+    Operation(OpType.replace, "=>", r"\\Rightarrow "),
     # two kinds of not_equal operators
-    Operation(OpType.replace, "!=", r"\\neq"),
-    Operation(OpType.replace, "/=", r"\\neq"),
+    Operation(OpType.replace, "!=", r"\\neq "),
+    Operation(OpType.replace, "/=", r"\\neq "),
     # comparison operators
-    Operation(OpType.replace, "<=", r"\\le"),
-    Operation(OpType.replace, ">=", r"\\ge"),
+    Operation(OpType.replace, "<=", r"\\le "),
+    Operation(OpType.replace, ">=", r"\\ge "),
     # arrows
-    Operation(OpType.replace, "\->", r"\\rightarrow"),
-    Operation(OpType.replace, "<\-", r"\\leftarrow"),
+    Operation(OpType.replace, "\->", r"\\rightarrow "),
+    Operation(OpType.replace, "<\-", r"\\leftarrow "),
     # equals sign with three lines
-    Operation(OpType.replace, "==", r"\\equiv"),
+    Operation(OpType.replace, "==", r"\\equiv "),
     # equals symbol with ~ (isomorphism)
-    Operation(OpType.replace, patterns.ISOMORPHIC, "\\cong"),
+    Operation(OpType.replace, patterns.ISOMORPHIC, "\\cong "),
     # ~ over a text
     Operation(OpType.replace, patterns.TILDE_OVER, r"\\widetilde "),
     # line over a text
     Operation(OpType.replace, patterns.OVERLINE, r"\\overline "),
     # plus-minus symbol
-    Operation(OpType.replace, r"\+\-", r"\\pm"),
+    Operation(OpType.replace, r"\+\-", r"\\pm "),
     # not operator
     Operation(OpType.replace, "\\\\" + patterns.NOT, r"\\not\\"),
     # TODO: division
     # -e 's/$(LEFT)\/$(RIGHT)/\\frac{\1}{\2}/g' \
     # multiply
-    Operation(OpType.replace, r"\*", r"\\cdot"),
+    Operation(OpType.replace, r"\*", r"\\cdot "),
     # non-math block inline:
     Operation(OpType.replace, patterns.NON_MATH_OPEN, target.MATH_CLOSE),
     Operation(OpType.replace, patterns.NON_MATH_CLOSE, target.MATH_OPEN),
