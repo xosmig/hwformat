@@ -1,0 +1,5 @@
+MATH_OPEN = r"\("
+MATH_CLOSE = r"\)"
+LINE_COMMENT = r"%"
+COMMENT_OPEN = r"\\ignore{"
+COMMENT_CLOSE = r"}"

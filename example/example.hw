@@ -11,6 +11,6 @@ Hello, /*inline comment*/ World!
 
 -^{Текст под чертой}, -^R
 
-x \!in V
+x \in U, x \!in V
 
 (a != b) ~= (a /= b)
