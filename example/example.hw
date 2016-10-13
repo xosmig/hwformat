@@ -1,3 +1,7 @@
+@\def\inn{\subseteq}    // you can add your own latex-defines
+@\undef\sumin       // you can remove default latex-defines
+
+a \inn b
 
 @# Заголовок text == 1
 

@@ -8,7 +8,7 @@
 # TODO: lists (enumerated and not enumerated, nested)
 # TODO: division (common, nested)
 # TODO: help message
-# TODO: custom additional latex \def's
+# FIXME: Now it's very hard to deal with latex error. It refers to a line in .tex file.
 # TODO: example with a definition of all features
 # TODO: good default header
 # TODO: inline comments
@@ -38,6 +38,8 @@ OPERATIONS_BEFORE_MATH = [
     Operation(OpType.replace, r"^\-\-\-+\n$", r"@\\medskip\n"),
     Operation(OpType.replace, r"^===+\n$", r"@\\bigskip\n"),
 
+    # @\undef\foo command
+    Operation(OpType.replace, r"\\undef(\\[a-zA-Z]+)", r"\\let\1\\undefined"),
 ]
 
 OPERATIONS_AFTER_MATH = [
@@ -51,43 +53,55 @@ OPERATIONS_AFTER_MATH = [
 OPERATIONS_MATH = [
     # wrap russian in text block:
     Operation(OpType.replace, patterns.RUS_WORD, r"\\text{\1}\\allowbreak "),
-    # warning: <=> should be parsed before => and <=
+
+    # WARNING: <=> should be parsed before => and <=
     Operation(OpType.replace, "<=>", r"\\Leftrightarrow "),
     Operation(OpType.replace, "=>", r"\\Rightarrow "),
+
     # two kinds of not_equal operators
     Operation(OpType.replace, "!=", r"\\neq "),
     Operation(OpType.replace, "/=", r"\\neq "),
+
     # comparison operators
     Operation(OpType.replace, "<=", r"\\le "),
     Operation(OpType.replace, ">=", r"\\ge "),
+
     # arrows
     Operation(OpType.replace, "\-\->", r"\\rightarrow "),
     Operation(OpType.replace, "<\-\-", r"\\leftarrow "),
     Operation(OpType.replace, "\->", r"\\rightarrow "),
     Operation(OpType.replace, "<\-", r"\\leftarrow "),
+
     # equals sign with three lines
     Operation(OpType.replace, "==", r"\\equiv "),
     # equals symbol with ~ (isomorphism)
     Operation(OpType.replace, patterns.ISOMORPHIC, "\\cong "),
+
     # ~ over a text
     Operation(OpType.replace, patterns.TILDE_OVER, r"\\widetilde "),
     # line over a text
     Operation(OpType.replace, patterns.OVERLINE, r"\\overline "),
+
     # plus-minus symbol
     Operation(OpType.replace, r"\+\-", r"\\pm "),
+
     # not operator
     Operation(OpType.replace, "\\\\" + patterns.NOT, r"\\not\\"),
+
     # division
     # FIXME: временная заглушка. TODO: нормальное деление со вложенностью
     Operation(OpType.replace, r"\[\[([^][]*)\/([^][]*)\]\]", r"\\frac{\1}{\2}"),
-    # star symbol: \*, multiply: *
+
+    # star symbol: \* and multiply: *
     Operation(OpType.replace, r"[^\\]\*", r"\\cdot "),
     Operation(OpType.replace, r"\\\*", r"*"),
+
     # open math mode in the begin of a line:
     Operation(OpType.replace, r"^(#*)", r"\1" + target.MATH_OPEN),
     # close math mode in the end of a line:
     Operation(OpType.replace, r"(\n$)", target.MATH_CLOSE + r"\1"),
-    # \\ for - backslash, \n - newline
+
+    # backslash: \\ and newline: \n
     Operation(OpType.replace, r"\\\\", r"\\textbackslash{}"),
     Operation(OpType.replace, r"\\n", r"\\\\"),
 ]
