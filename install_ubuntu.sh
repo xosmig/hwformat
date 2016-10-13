@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Временно, чтобы можно было как-то пользоваться
+# Потом надо будет сделать это как-нибудь нормально
+
 function install {
     target="/usr/local/bin/hwformat"
     path="$PWD"
@@ -8,6 +11,9 @@ function install {
         printf "#!"
         printf "/bin/bash\n"
         printf "python3 -- \"$path/src/hwformat.py\" \"\$@\"\n"
+        printf "pdflatex *.tex\n"
+        printf "pdflatex *.tex\n"
+        printf "rm -f *.aux *.log\n"
     fi > "$target" &&
     chmod ug=rwx "$target" &&
     chmod o=rx "$target"
