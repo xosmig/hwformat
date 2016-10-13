@@ -1,5 +1,5 @@
 
-# TODO: custom latex header support
+# TODO: custom additional latex \def's
 # TODO: convert to pdf
 #   possible solution: use subprocess
 # TODO: parsing command line arguments
@@ -14,7 +14,8 @@
 #   possible solutions:
 #   + m.b. that's ok.
 #   + interpret all spaces as spaces and don't let latex remove them.
-#  TODO: installation
+# TODO: installation
+# TODO: inline and multiline comments (example: /*  ... anything (m.b. several lines) ... */)
 
 import re
 import sys
