@@ -32,14 +32,17 @@ OPERATIONS_BEFORE_MATH = [
     Operation(OpType.replace, r"[ ]+$", ""),
 
     # comments:
-    Operation(OpType.replace, patterns.LINE_COMMENT, target.LINE_COMMENT),
+    # FIXME: works only in the beginning of the line
+    Operation(OpType.replace, "^//", target.LINE_COMMENT),
 
     # skips:
     Operation(OpType.replace, r"^\-\-\-+\n$", r"@\\medskip\n"),
     Operation(OpType.replace, r"^===+\n$", r"@\\bigskip\n"),
 
+    # @\redef\foo\bar command
+    Operation(OpType.replace, r"\\redef(\\[a-zA-Z0-9]+)\{(.*)\}", r"\\undef\1 \\def\1{\2}"),
     # @\undef\foo command
-    Operation(OpType.replace, r"\\undef(\\[a-zA-Z]+)", r"\\let\1\\undefined"),
+    Operation(OpType.replace, r"\\undef(\\[a-zA-Z0-9]+)", r"\\let\1\\undefined"),
 
     # backslash: \\ and newline: \n
     Operation(OpType.replace, r"\\\\", r"\\textbackslash{}"),

@@ -1,7 +1,12 @@
-@\def\sub{\subseteq}    // you can add your own latex-defines
-@\undef\sumin       // you can remove default latex-defines
+// FIXME: repair // and use it instead of % in the examples below
+
+@\def\sub{\subseteq}    % you can add your own defines
+@\undef\sumin           % you can remove default defines
+@\redef\mul{\sum}       % you can change defines
 
 a \sub b
+
+\mul\limits_{i = 1}^{n} a_i
 
 @# Заголовок text == 1
 
