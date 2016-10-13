@@ -67,8 +67,8 @@ OPERATIONS_MATH = [
     Operation(OpType.replace, r"\+\-", r"\\pm "),
     # not operator
     Operation(OpType.replace, "\\\\" + patterns.NOT, r"\\not\\"),
-    # TODO: division
-    # -e 's/$(LEFT)\/$(RIGHT)/\\frac{\1}{\2}/g' \
+    # FIXME: временная заглушка. TODO: нормальное деление со вложенностью
+    Operation(OpType.replace, r"\[\[([^][]*)\/([^][]*)\]\]", r"\\frac{\1}{\2}"),
     # multiply: ** or \*
     Operation(OpType.replace, r"\*\*", r"\\cdot "),
     Operation(OpType.replace, r"\\\*", r"\\cdot "),
