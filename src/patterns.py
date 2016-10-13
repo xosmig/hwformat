@@ -1,4 +1,3 @@
-RAW = "@"
 NON_MATH_OPEN = r"\[\{"
 NON_MATH_CLOSE = r"\}\]"
 COMMENT_OPEN = r"/\*"

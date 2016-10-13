@@ -24,11 +24,20 @@ from operations import OpType, Operation
 
 FORMAT = "hw"
 
-OPERATIONS = [
+OPERATIONS_BEFORE_MATH = [
     # trim extra spaces in the end of line
     Operation(OpType.replace, r"[ ]+$", ""),
+
     # comments.
     Operation(OpType.replace, patterns.LINE_COMMENT, target.LINE_COMMENT),
+]
+
+OPERATIONS_AFTER_MATH = [
+    # headers:
+    Operation(OpType.replace, r"^(@?)####(.*)(\n$)", r"\1\\medskip\\textbf{\2}\\medskip\3"),
+    Operation(OpType.replace, r"^(@?)###(.*)(\n$)", r"\1\\subsubsection*{\2}\3"),
+    Operation(OpType.replace, r"^(@?)##(.*)(\n$)", r"\1\\subsection*{\2}\3"),
+    Operation(OpType.replace, r"^(@?)#(.*)(\n$)", r"\1\\section*{\2}\3"),
 ]
 
 OPERATIONS_MATH = [
@@ -60,11 +69,14 @@ OPERATIONS_MATH = [
     Operation(OpType.replace, "\\\\" + patterns.NOT, r"\\not\\"),
     # TODO: division
     # -e 's/$(LEFT)\/$(RIGHT)/\\frac{\1}{\2}/g' \
-    # multiply
-    Operation(OpType.replace, r"\*", r"\\cdot "),
-    # non-math block inline:
-    Operation(OpType.replace, patterns.NON_MATH_OPEN, target.MATH_CLOSE),
-    Operation(OpType.replace, patterns.NON_MATH_CLOSE, target.MATH_OPEN),
+    # multiply: ** or \*
+    Operation(OpType.replace, r"\*\*", r"\\cdot "),
+    Operation(OpType.replace, r"\\\*", r"\\cdot "),
+
+    # open math mode in the begin of a line:
+    Operation(OpType.replace, r"^(#*)", r"\1" + target.MATH_OPEN),
+    # close math mode in the end of a line:
+    Operation(OpType.replace, r"(\n$)", target.MATH_CLOSE + r"\1"),
 ]
 
 
@@ -83,22 +95,20 @@ def main():
 
         with open(source_path, "r") as source:
             for line in source.readlines():
-                for op in OPERATIONS:
+                for op in OPERATIONS_BEFORE_MATH:
                     line = op.do(line)
 
-                if line.startswith(patterns.RAW):
+                if line.startswith("@"):
                     # cut the raw_operator out
-                    line = line[len(patterns.RAW):]
+                    line = line[1:]
                 elif line != "\n" and not line.startswith(target.LINE_COMMENT):
                     # if line isn't empty nor comment:
 
                     for op in OPERATIONS_MATH:
                         line = op.do(line)
 
-                    line = target.MATH_OPEN + line
-
-                    # place close_math operator before end of line
-                    line = re.sub("\n$", target.MATH_CLOSE + r"\n", line)
+                for op in OPERATIONS_AFTER_MATH:
+                    line = op.do(line)
 
                 dest.write(line)
 
