@@ -12,7 +12,7 @@ function fail {
     printf "${RED}FAIL${NC}\n"
 }
 
-SRC_PATH="PATH_TO_SRC"
+SRC_PATH="PATH_TO_SRC" &&
 python3 -- "$SRC_PATH/hwformat.py" "$@" &&
 file="$1" &&
 tex="${file%.hw}" &&
