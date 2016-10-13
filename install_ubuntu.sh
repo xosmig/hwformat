@@ -7,12 +7,14 @@ function ok {
     GREEN='\e[1;32m'
     NC='\033[0m' # No Color
     printf "${GREEN}[^_^]${NC}\n"
+    exit 0
 }
 
 function fail {
     RED='\e[1;31m'
     NC='\033[0m' # No Color
     printf "${RED}FAIL${NC}\n"
+    exit 1
 }
 
 function check_root {
