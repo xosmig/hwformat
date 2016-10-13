@@ -40,6 +40,10 @@ OPERATIONS_BEFORE_MATH = [
 
     # @\undef\foo command
     Operation(OpType.replace, r"\\undef(\\[a-zA-Z]+)", r"\\let\1\\undefined"),
+
+    # backslash: \\ and newline: \n
+    Operation(OpType.replace, r"\\\\", r"\\textbackslash{}"),
+    Operation(OpType.replace, r"\\n([^a-zA-Z])", r"\\\\\1"),
 ]
 
 OPERATIONS_AFTER_MATH = [
@@ -85,8 +89,11 @@ OPERATIONS_MATH = [
     # plus-minus symbol
     Operation(OpType.replace, r"\+\-", r"\\pm "),
 
-    # not operator
-    Operation(OpType.replace, "\\\\" + patterns.NOT, r"\\not\\"),
+    # beautiful empty-set symbol:
+    Operation(OpType.replace, r"\\!O", r"\\varnothing"),
+
+    # not operator. example: \!in == \not\in
+    Operation(OpType.replace, r"\\!", r"\\not\\"),
 
     # division
     # FIXME: временная заглушка. TODO: нормальное деление со вложенностью
@@ -100,10 +107,6 @@ OPERATIONS_MATH = [
     Operation(OpType.replace, r"^(#*)", r"\1" + target.MATH_OPEN),
     # close math mode in the end of a line:
     Operation(OpType.replace, r"(\n$)", target.MATH_CLOSE + r"\1"),
-
-    # backslash: \\ and newline: \n
-    Operation(OpType.replace, r"\\\\", r"\\textbackslash{}"),
-    Operation(OpType.replace, r"\\n", r"\\\\"),
 ]
 
 

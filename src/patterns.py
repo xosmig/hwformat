@@ -9,6 +9,4 @@ ISOMORPHIC = "~="
 TILDE_OVER = r"~\^"
 # -^{text} --> \overline{text}
 OVERLINE = r"\-\^"
-# \!in --> \not\in
-NOT = "!"
 RUS_WORD = "([ ]?[а-яА-ЯёЁ]+[\-:!\.,]?[ ]?)"
