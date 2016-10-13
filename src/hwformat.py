@@ -1,21 +1,22 @@
 
-# TODO: custom additional latex \def's
+# TODO: inline and multiline comments (example: /*  ... anything (m.b. several lines) ... */)
 # TODO: convert to pdf
 #   possible solution: use subprocess
-# TODO: parsing command line arguments
-# TODO: headers (#)
+# TODO: parse command line arguments
+#   + -t --tex      - produce only .tex file (and only .pdf file otherwise)
+#   + -o --output   - specify an output file
 # TODO: lists (enumerated and not enumerated, nested)
 # TODO: division (common, nested)
 # TODO: help message
-# TODO: complex example with definition
+# TODO: custom additional latex \def's
+# TODO: example with a definition of all features
 # TODO: good default header
 # TODO: inline comments
 # FIXME: problem with spaces in math mode
 #   possible solutions:
 #   + m.b. that's ok.
 #   + interpret all spaces as spaces and don't let latex remove them.
-# TODO: installation
-# TODO: inline and multiline comments (example: /*  ... anything (m.b. several lines) ... */)
+# TODO: installation for windows and linux
 
 import re
 import sys
@@ -76,6 +77,7 @@ OPERATIONS_MATH = [
     Operation(OpType.replace, r"\+\-", r"\\pm "),
     # not operator
     Operation(OpType.replace, "\\\\" + patterns.NOT, r"\\not\\"),
+    # division
     # FIXME: временная заглушка. TODO: нормальное деление со вложенностью
     Operation(OpType.replace, r"\[\[([^][]*)\/([^][]*)\]\]", r"\\frac{\1}{\2}"),
     # star symbol: \*, multiply: *
