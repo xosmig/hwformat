@@ -1,25 +1,7 @@
 #!/bin/bash
 
 # Временно, чтобы можно было как-то пользоваться
-# Потом надо будет сделать это как-нибудь нормально
-
-function install {
-    target="/usr/local/bin/hwformat"
-    path="$PWD"
-
-    if "true"; then
-        printf "#!" &&
-        printf "/bin/bash\n" &&
-        printf "python3 -- \"$path/src/hwformat.py\" \"\$@\" &&\n" &&
-        printf "file=\"\$1\" &&\n" &&
-        printf "texfile=\"\${file%%.hw}\" &&\n" &&
-        printf "pdflatex \"\$texfile\" &&\n" &&
-        printf "pdflatex \"\$texfile\" &&\n"
-        printf "echo \"[^_^]\"\n"
-    fi > "$target" &&
-    chmod ug=rwx "$target" &&
-    chmod o=rx "$target"
-}
+# Потом надо будет сделать это как-нибудь нормально и кросплатформенно
 
 function ok {
     GREEN='\e[1;32m'
@@ -33,8 +15,20 @@ function fail {
     printf "${RED}FAIL${NC}\n"
 }
 
-if install; then
-    ok
-else
-    fail
-fi
+function check_root {
+    if [[ "$EUID" -ne 0 ]]; then
+        echo "You must be a root user" 1>&2
+        return 1
+    fi
+    return 0
+}
+
+check_root &&
+TARGET="/usr/local/bin/hwformat" &&
+SOURCE="ubuntu_run_script_template.sh" &&
+cp "$SOURCE" "$TARGET" &&
+sed -i "s|PATH_TO_SRC|$PWD/src|g" "$TARGET" &&
+sudo chmod ug=rwx "$TARGET" &&
+sudo chmod o=rx "$TARGET" &&
+ok || fail
+
