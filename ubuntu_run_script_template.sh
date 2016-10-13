@@ -15,7 +15,10 @@ function fail {
 SRC_PATH="PATH_TO_SRC" &&
 python3 -- "$SRC_PATH/hwformat.py" "$@" &&
 file="$1" &&
-tex="${file%.hw}" &&
+tex="${file%.hw}.tex" &&
 pdflatex "$tex" &&
 pdflatex "$tex" &&
+aux="${file%.hw}.aux" &&
+log="${file%.hw}.log" &&
+rm "$log" "$aux" &&
 ok || fail
