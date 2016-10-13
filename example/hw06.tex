@@ -1,0 +1,170 @@
+
+\documentclass[12pt,a4paper]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+
+
+% Некоторые множества
+
+\def\Q{\mathbb{Q}}
+\def\Z{\mathbb{Z}}
+\def\N{\mathbb{N}}
+\def\R{\mathbb{R}}
+
+
+% Бинарные операции над множествами
+
+% xor
+\def\xor{\text{ {\raisebox{-2pt}{\ensuremath{\Hat{}}}} }}
+% объединение
+\def\u{\cup}
+% объединение
+\def\i{\cap}
+
+
+% Комбинаторика
+
+% Биномиальный коэффициент : (из n  по k)
+\def\set{\binom}
+% ((из n по k))
+\def\mset#1#2{\ensuremath{\left(\kern-.3em\left(\genfrac{}{}{0pt}{}{#1}{#2}\right)\kern-.3em\right)}}
+
+
+% Опеации над несколькими множествами
+
+% Сумма
+\def\suml#1#2#3{\sum\limits_{{#1}={#2}}^{#3}}
+\def\sumi#1#2{\suml{#1}{#2}{\inf}}
+\def\sumin#1#2{\sum\limits_{{#1} \in {#2}}}
+
+% Перемножение (знак П)
+\def\mul{\prod}
+\def\mull#1#2#3{\mul\limits_{{#1}={#2}}^{#3}}
+\def\muli#1#2{\mull{#1}{#2}{\inf}}
+\def\mulin#1#2{\mul\limits_{{#1} \in {#2}}}
+
+% Объединение
+\def\U{\bigcup}
+\def\Ul#1#2#3{\U\limits_{{#1}={#2}}^{#3}}
+\def\Ui#1#2{\Ul{#1}{#2}{\inf}}
+\def\Uin#1#2{\U\limits_{{#1} \in {#2}}}
+
+% Пересечение
+\def\I{\bigcap}
+\def\Il#1#2#3{\I\limits_{{#1}={#2}}^{#3}}
+\def\Ii#1#2{\Il{#1}{#2}{\inf}}
+\def\Iin#1#2{\I\limits_{{#1} \in {#2}}}
+
+
+% Разделители
+
+\def\ms{\medskip}
+\def\bs{\bigskip}
+
+
+% Греческий алфавит
+
+\def\l{\lambda}
+\def\e{\varepsilon}
+\def\d{\delta}
+\def\m{\mu}
+\def\p{\phi}
+
+\def\L{\Lambda}
+\def\D{\Delta}
+\def\M{\Mu}
+\def\P{\Phi}
+
+
+% Кванторы
+
+\def\A{\forall}
+\def\E{\exists\;}
+
+
+% Что-то еще
+
+\def\inf{\t{+}\infty}    % +inf
+\def\O{\mathcal{O}}      %
+\def\t{\text}
+\def\bs{\textbackslash{}}
+
+
+\begin{document}
+\section*{ Домашняя работа за 13.10.2016}
+
+\subsection*{  Тонких Андрей}
+
+\subsubsection*{ 6.1:}
+
+\(\text{Остовное }\allowbreak \text{дерево }\allowbreak \text{диаметра }\allowbreak 2 -\text{ это }\allowbreak \text{солнышко. }\allowbreak \text{Обозначим }\allowbreak \text{за }\allowbreak v\text{ его }\allowbreak \text{центр.}\allowbreak \)
+
+\(\A a: (a \rightarrow  v) \in G.\)
+
+\(\text{Рассмотрим }\allowbreak \text{остовное }\allowbreak \text{дерево }\allowbreak \text{диаметром }\allowbreak l.\)
+\(\text{В }\allowbreak \text{нем }\allowbreak (\text{а }\allowbreak \text{значит }\allowbreak \text{и }\allowbreak \text{в }\allowbreak \text{исходном }\allowbreak \text{графе}\allowbreak )\text{ есть }\allowbreak \text{прострой }\allowbreak \text{путь }\allowbreak \text{длины }\allowbreak \text{длины }\allowbreak l.\)
+\(\text{Значит }\allowbreak \text{есть }\allowbreak \text{и }\allowbreak \text{простой }\allowbreak \text{путь }\allowbreak \text{любой }\allowbreak \text{длины }\allowbreak \text{от }\allowbreak 1\text{ до }\allowbreak l.\)
+
+\medskip
+\(\text{Для }\allowbreak \text{любого }\allowbreak k\text{ от }\allowbreak 2\text{ до }\allowbreak l\text{ построим }\allowbreak \text{остовное }\allowbreak \text{дерево }\allowbreak \text{диаметром }\allowbreak k:\)
+
+\(\text{Возьмем }\allowbreak \text{простой }\allowbreak \text{путь }\allowbreak \p\text{ длины }\allowbreak k.\)
+\(\text{Если }\allowbreak \text{он }\allowbreak \text{не }\allowbreak \text{проходит }\allowbreak \text{через }\allowbreak v,\text{ исправим }\allowbreak \text{это.}\allowbreak \)
+\(\text{Для }\allowbreak \text{этого }\allowbreak \text{заменим }\allowbreak \text{в }\allowbreak \text{нем }\allowbreak \text{два }\allowbreak \text{любых }\allowbreak \text{последовательных }\allowbreak \text{ребра }\allowbreak (a \rightarrow  b), (b \rightarrow  c)\)
+\(\text{на }\allowbreak \text{ребра }\allowbreak (a \rightarrow  v), (v \rightarrow  c).\)
+
+\(\text{Все }\allowbreak \text{вершины, }\allowbreak \text{не }\allowbreak \text{входящие }\allowbreak \text{в }\allowbreak \text{этот }\allowbreak \text{путь }\allowbreak \text{соединим }\allowbreak \text{с }\allowbreak v (\text{такие }\allowbreak \text{ребра }\allowbreak \text{в }\allowbreak \text{графе }\allowbreak \text{есть}\allowbreak ).\)
+
+\(\text{Построенное }\allowbreak \text{остовное }\allowbreak \text{дерево }\allowbreak \text{имеет }\allowbreak \text{диаметра }\allowbreak k.\)
+
+\subsubsection*{ 6.2:}
+
+\(\text{Подвесим }\allowbreak \text{дерево, }\allowbreak \text{рассмотрим }\allowbreak \text{самую }\allowbreak \text{глубокую }\allowbreak \text{вершину, }\allowbreak \text{не }\allowbreak \text{являющуюся }\allowbreak \text{листом }\allowbreak - v.\)
+\(deg(v) \ge  3\text{ и }\allowbreak \text{все }\allowbreak \text{ее }\allowbreak \text{дети }\allowbreak -\text{ листья }\allowbreak (\text{т.}\allowbreak \text{к. }\allowbreak v -\text{ самая }\allowbreak \text{глубокая }\allowbreak \text{из }\allowbreak \text{не-}\allowbreak \text{листьев}\allowbreak ).\)
+\(\text{Значит }\allowbreak \text{любые }\allowbreak \text{два }\allowbreak \text{ребенка }\allowbreak v -\text{ пара }\allowbreak \text{листьев }\allowbreak \text{с }\allowbreak \text{общим }\allowbreak \text{соседом }\allowbreak (v)\)
+
+\subsubsection*{ 6.3:}
+
+% {Какое-то выражение} - стандартная tex'овская конструкция,
+% запрещающая разбивать данное выражение переносом строки.
+
+\(\A k (\text{в }\allowbreak \text{частности, }\allowbreak \text{для }\allowbreak k = 4)\text{ подойдет }\allowbreak \text{дерево }\allowbreak \text{из }\allowbreak \text{двух }\allowbreak \text{вершин.}\allowbreak \)
+\(\text{Это }\allowbreak \text{единственное }\allowbreak \text{дерево, }\allowbreak \text{где }\allowbreak \text{все }\allowbreak \text{степени }\allowbreak {\text{равны }\allowbreak 1} \Rightarrow \text{ дерево }\allowbreak \text{из }\allowbreak > 2\text{ вершин}\allowbreak \)
+\(\text{должно }\allowbreak \text{содержать }\allowbreak \text{вершину }\allowbreak \text{степени }\allowbreak k,\text{ а }\allowbreak \text{значит,}\allowbreak \)
+\({k-\text{солнышко}\allowbreak }\text{ в }\allowbreak \text{качестве }\allowbreak \text{своего }\allowbreak \text{подграфа.}\allowbreak \)
+
+\(\text{Чтобы }\allowbreak \text{увеличить }\allowbreak \text{количество }\allowbreak \text{вершин, }\allowbreak \text{придется }\allowbreak \text{сделать }\allowbreak \text{из }\allowbreak \text{одной }\allowbreak \text{вершины }\allowbreak {\text{степени }\allowbreak 1}\)
+\(\text{вершину }\allowbreak {\text{степени }\allowbreak k}.\text{ То }\allowbreak \text{есть, }\allowbreak \text{количество }\allowbreak \text{вершин }\allowbreak \text{увеличится }\allowbreak \text{на }\allowbreak k - 1.\)
+
+\(\text{И }\allowbreak \text{т.}\allowbreak \text{д.}\allowbreak \)
+
+\(\text{Ответ: }\allowbreak 2, \A n \in \N_0: k + 1 + n(k - 1).\)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\medskip
+
+\end{document}

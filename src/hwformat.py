@@ -26,11 +26,16 @@ from operations import OpType, Operation
 FORMAT = "hw"
 
 OPERATIONS_BEFORE_MATH = [
-    # trim extra spaces in the end of line
+    # trim extra spaces in the end of line:
     Operation(OpType.replace, r"[ ]+$", ""),
 
-    # comments.
+    # comments:
     Operation(OpType.replace, patterns.LINE_COMMENT, target.LINE_COMMENT),
+
+    # skips:
+    Operation(OpType.replace, r"^\-\-\-+\n$", r"@\\medskip\n"),
+    Operation(OpType.replace, r"^===+\n$", r"@\\bigskip\n"),
+
 ]
 
 OPERATIONS_AFTER_MATH = [
@@ -54,6 +59,8 @@ OPERATIONS_MATH = [
     Operation(OpType.replace, "<=", r"\\le "),
     Operation(OpType.replace, ">=", r"\\ge "),
     # arrows
+    Operation(OpType.replace, "\-\->", r"\\rightarrow "),
+    Operation(OpType.replace, "<\-\-", r"\\leftarrow "),
     Operation(OpType.replace, "\->", r"\\rightarrow "),
     Operation(OpType.replace, "<\-", r"\\leftarrow "),
     # equals sign with three lines
@@ -77,6 +84,9 @@ OPERATIONS_MATH = [
     Operation(OpType.replace, r"^(#*)", r"\1" + target.MATH_OPEN),
     # close math mode in the end of a line:
     Operation(OpType.replace, r"(\n$)", target.MATH_CLOSE + r"\1"),
+    # \\ for - backslash, \n - newline
+    Operation(OpType.replace, r"\\\\", r"\\textbackslash{}"),
+    Operation(OpType.replace, r"\\n", r"\\\\"),
 ]
 
 
