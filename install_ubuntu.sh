@@ -8,12 +8,14 @@ function install {
     path="$PWD"
 
     if "true"; then
-        printf "#!"
-        printf "/bin/bash\n"
-        printf "python3 -- \"$path/src/hwformat.py\" \"\$@\"\n"
-        printf "pdflatex *.tex\n"
-        printf "pdflatex *.tex\n"
-        printf "rm -f *.aux *.log\n"
+        printf "#!" &&
+        printf "/bin/bash\n" &&
+        printf "python3 -- \"$path/src/hwformat.py\" \"\$@\" &&\n" &&
+        printf "file=\"\$1\" &&\n" &&
+        printf "texfile=\"\${file%%.hw}\" &&\n" &&
+        printf "pdflatex \"\$texfile\" &&\n" &&
+        printf "pdflatex \"\$texfile\" &&\n"
+        printf "echo \"[^_^]\"\n"
     fi > "$target" &&
     chmod ug=rwx "$target" &&
     chmod o=rx "$target"

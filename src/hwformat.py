@@ -14,6 +14,7 @@
 #   possible solutions:
 #   + m.b. that's ok.
 #   + interpret all spaces as spaces and don't let latex remove them.
+#  TODO: installation
 
 import re
 import sys
@@ -69,10 +70,9 @@ OPERATIONS_MATH = [
     Operation(OpType.replace, "\\\\" + patterns.NOT, r"\\not\\"),
     # FIXME: временная заглушка. TODO: нормальное деление со вложенностью
     Operation(OpType.replace, r"\[\[([^][]*)\/([^][]*)\]\]", r"\\frac{\1}{\2}"),
-    # multiply: ** or \*
-    Operation(OpType.replace, r"\*\*", r"\\cdot "),
-    Operation(OpType.replace, r"\\\*", r"\\cdot "),
-
+    # star symbol: \*, multiply: *
+    Operation(OpType.replace, r"[^\\]\*", r"\\cdot "),
+    Operation(OpType.replace, r"\\\*", r"*"),
     # open math mode in the begin of a line:
     Operation(OpType.replace, r"^(#*)", r"\1" + target.MATH_OPEN),
     # close math mode in the end of a line:
