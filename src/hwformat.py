@@ -110,6 +110,10 @@ OPERATIONS_MATH = [
     Operation(OpType.replace, r"^(#*)", r"\1" + target.MATH_OPEN),
     # close math mode in the end of a line:
     Operation(OpType.replace, r"(\n$)", target.MATH_CLOSE + r"\1"),
+
+    # text entry:
+    Operation(OpType.replace, r"([^[]?)\[\{", r"\1\\text{"),
+    Operation(OpType.replace, r"\}\]([^]]?)", r"}\1"),
 ]
 
 
