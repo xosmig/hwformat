@@ -25,7 +25,7 @@ DEFAULT_HEADER = r"""
 % Бинарные операции над множествами
 
 % xor
-\def\xor{\text{ {\raisebox{-2pt}{\ensuremath{\Hat{}}}} }}
+\def\xor{\oplus}
 % объединение
 \def\u{\cup}
 % объединение
@@ -74,6 +74,9 @@ DEFAULT_HEADER = r"""
 
 % Греческий алфавит
 
+\def\a{\alpha}
+\def\b{\beta}
+\def\g{\gamma}
 \def\l{\lambda}
 \def\e{\varepsilon}
 \def\d{\delta}
