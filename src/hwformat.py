@@ -1,5 +1,18 @@
 
+# TODO: priority system instead of dependency on order of commands.
+#   m.b. invent some new syntax to define operations
 # TODO: inline and multiline comments (example: /*  ... anything (m.b. several lines) ... */)
+# TODO: invent some cool syntax for operations on sets like \sum, \prod
+#   wishlist:
+#       \sum{x in A} == \sum\limits_{x \in A}
+#       \sum{x !in A} == \sum\limits_{x \!in A}
+#       \sum{j /= k} == \sum\limits_{x /= k}
+#       \sum{j in [0..n]} == \sum\limits_{x = 0}^{n}
+#       multiple counters
+# TODO: variables:
+#   examples:
+#       SA := \sum{x in A} foo(x)
+#   some kind of scopes (headers)
 # TODO: convert to pdf
 #   possible solution: use subprocess
 # TODO: parse command line arguments
@@ -17,6 +30,7 @@
 #   + m.b. that's ok.
 #   + interpret all spaces as spaces and don't let latex remove them.
 # TODO: installation for windows and linux
+# TODO: adopt for english language
 
 import re
 import sys
@@ -58,6 +72,10 @@ OPERATIONS_AFTER_MATH = [
 ]
 
 OPERATIONS_MATH = [
+    # dash
+    # Warning: must go earlier than russian text parsing
+    Operation(OpType.replace, r" \-\- ", r"\\t{ -- }"),
+
     # wrap russian in text block:
     Operation(OpType.replace, patterns.RUS_WORD, r"\\text{\1}\\allowbreak "),
 

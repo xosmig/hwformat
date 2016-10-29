@@ -43,9 +43,10 @@ DEFAULT_HEADER = r"""
 % Опеации над несколькими множествами
 
 % Сумма
-\def\suml#1#2#3{\sum\limits_{{#1}={#2}}^{#3}}
-\def\sumi#1#2{\suml{#1}{#2}{\inf}}
-\def\sumin#1#2{\sum\limits_{{#1} \in {#2}}}
+\def\suml{\sum\limits}
+\def\sumfor#1#2#3{\suml_{{#1}={#2}}^{#3}}
+\def\sumi#1#2{\sumfor{#1}{#2}{\inf}}
+\def\sumin#1#2{\suml_{{#1} \in {#2}}}
 
 % Перемножение (знак П)
 \def\mul{\prod}

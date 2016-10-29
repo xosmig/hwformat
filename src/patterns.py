@@ -8,4 +8,4 @@ ISOMORPHIC = "~="
 TILDE_OVER = r"~\^"
 # -^{text} --> \overline{text}
 OVERLINE = r"\-\^"
-RUS_WORD = "([ ]?[\(]*[а-яА-ЯёЁ]+[\-:!\.,\)]*[ ]?)"
+RUS_WORD = "([ ]?[-\(]*[а-яА-ЯёЁ]+[\-:!\.,\)]*[ ]?)"

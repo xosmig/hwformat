@@ -88,12 +88,12 @@ TODO: about
 (1 * 2) / 3 ~= [[1 * 2 / 3]]
 
 ---
-@В hwformat:
+В [{hwformat}]:
 
 @(1 * 2) / 3 $\sim =$ [[1 * 2 / 3]]
 
 ---
-@В latex:
+В [{latex}]:
 @(1 \\cdot 2) / 3 \\equiv \\frac\{1 \\cdot 2\}\{3\}
 
 @## ...
@@ -122,4 +122,4 @@ A \subset B, A \!subset C
 
 Обычный восклицательный знак! more!
 
-\t{hello} >= hello
+[{hello}] >= hello
