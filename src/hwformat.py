@@ -15,6 +15,7 @@
 #   some kind of scopes (headers)
 # TODO: convert to pdf
 #   possible solution: use subprocess
+# TODO: ability to modify headers.
 # TODO: parse command line arguments
 #   + -t --tex      - produce only .tex file (and only .pdf file otherwise)
 #   + -o --output   - specify an output file
