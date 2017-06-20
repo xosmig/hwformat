@@ -50,7 +50,7 @@ import patterns
 import target
 import resources
 from operations import Operation, Replace
-from cli_parser import get_opts, CLIParseError
+from cli_parser import get_opts, CLIParseError, CLIOption, CLIOptionWithValue
 
 FORMAT = "hw"
 
@@ -188,12 +188,17 @@ def hw_to_tex(filename, output_file=None):
 
 
 def main():
+    output_option = CLIOptionWithValue(["-o", "--output", "-output"])
     try:
-        (filename, opts) = get_opts(sys.argv, opts_without_value=set(), opts_with_value=set("-o"))
+        filename, opts = get_opts(sys.argv, [output_option])
     except CLIParseError as err:
         sys.stderr.write(err.message)
         sys.stderr.write("\n")
         exit(2)
+    # hw_to_tex(filename, output_option.value)
+    # x, y = 1, 2
+    # print(x)
+    # print(y)
 
 
 if __name__ == "__main__":
