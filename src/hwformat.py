@@ -44,16 +44,14 @@
 #   + interpret all spaces as spaces and don't let latex remove them.
 # TODO: installation for windows and linux
 
-import re
 import sys
 import patterns
 import target
-import resources as r
-from operations import Operation, Replace
-from cli_parser import get_opts, CLIParseError, CLIOption, CLIOptionWithValue
-
-
-FORMAT_NAME = "hw"
+import resources
+import settings
+from operations import *
+from cli_parser import *
+from utils import *
 
 
 OPERATIONS_BEFORE_MATH = [
@@ -155,16 +153,19 @@ OPERATIONS_MATH = [
 
 
 # TODO: get header path to the parameters
-def hw_to_tex(filename, output_file=None):
-    """None value for output_file means default output file name"""
+def hw_to_tex(filename, output_file=None, header_file=None):
+    """None value for output_file means default output file name.
+    If no header provided, the default one will be used."""
 
     if output_file is None:
-        output_file = re.sub(r"\." + FORMAT_NAME, r".tex", filename)
-
-    header = r.DEFAULT_HEADER
+        output_file = change_extension(filename, settings.FORMAT_NAME, target.EXTENSION)
 
     with open(output_file, "w") as dest:
-        dest.write(header)
+        if header_file is None:
+            dest.write(resources.DEFAULT_HEADER)
+        else:
+            dest.writelines(open(header_file, "r").readlines())
+
         dest.write("\n\\begin{document}\n")
 
         with open(filename, "r") as source:
@@ -190,12 +191,14 @@ def hw_to_tex(filename, output_file=None):
 
 
 def main():
+    # project_dir = path.pardir(path.dirname(path.realpath(__file__)))
+
     help_option_names = ["h", "-h", "help", "-help", "--help", "?", "-?"]
     if len(sys.argv) == 1 or (len(sys.argv) == 2 and sys.argv[1] in help_option_names):
-        print(r.HELP_MESSAGE)
+        print(resources.HELP_MESSAGE)
 
-    output_option = CLIOptionWithValue(["-o", "--output", "-output"])
-    header_option = CLIOptionWithValue(["-header", "--header"])
+    output_option = CLIOptionWithValue(["-o", "-output", "--output"])
+    header_option = CLIOptionWithValue(["-h", "-header", "--header"])
     try:
         filename, opts = get_opts(sys.argv, [output_option, header_option])
     except CLIParseError as err:
