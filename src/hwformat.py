@@ -49,127 +49,126 @@ import sys
 import patterns
 import target
 import resources
-from operations import OpType, Operation
+from operations import Operation, Replace
+from cli_parser import get_opts, CLIParseError
 
 FORMAT = "hw"
 
 OPERATIONS_BEFORE_MATH = [
     # trim extra spaces in the end of line:
-    Operation(OpType.replace, r"[ ]+$", ""),
+    Replace(r"[ ]+$", ""),
 
     # comments:
-    Operation(OpType.replace, "//.*$", ""),
+    Replace("//.*$", ""),
 
     # skips:
-    Operation(OpType.replace, r"^\-\-\-+\n$", r"@\\medskip\n"),
-    Operation(OpType.replace, r"^===+\n$", r"@\\bigskip\n"),
+    Replace(r"^\-\-\-+\n$", r"@\\medskip\n"),
+    Replace(r"^===+\n$", r"@\\bigskip\n"),
 
     # @\undef\foo command
-    Operation(OpType.replace, r"\\undef(\\[a-zA-Z0-9]+)", r"\\let\1\\undefined"),
+    Replace(r"\\undef(\\[a-zA-Z0-9]+)", r"\\let\1\\undefined"),
 
     # backslash: \\ and newline: \n
-    Operation(OpType.replace, r"\\\\", r"\\textbackslash{}"),
-    Operation(OpType.replace, r"\\n([^a-zA-Z])", r"\\\\\1"),
+    Replace(r"\\\\", r"\\textbackslash{}"),
+    Replace(r"\\n([^a-zA-Z])", r"\\\\\1"),
 
     # emphasis: italic text: //text//
-    Operation(OpType.replace, r"\*/(.*?)/\*", r"\\textit{\1}"),
+    Replace(r"\*/(.*?)/\*", r"\\textit{\1}"),
 
     # bold text: **text**
-    Operation(OpType.replace, r"\*\*(.*?)\*\*", r"\\textbf{\1}"),
+    Replace(r"\*\*(.*?)\*\*", r"\\textbf{\1}"),
 
     # underlined text: __text__
-    Operation(OpType.replace, r"__(.*?)__", r"\\underline{\1}")
+    Replace(r"__(.*?)__", r"\\underline{\1}"),
 ]
 
 OPERATIONS_AFTER_MATH = [
     # headers:
-    Operation(OpType.replace, r"^(@?)####(.*)(\n$)", r"\1\\medskip\\textbf{\2}\\medskip\3"),
-    Operation(OpType.replace, r"^(@?)###(.*)(\n$)", r"\1\\subsubsection*{\2}\3"),
-    Operation(OpType.replace, r"^(@?)##(.*)(\n$)", r"\1\\subsection*{\2}\3"),
-    Operation(OpType.replace, r"^(@?)#(.*)(\n$)", r"\1\\section*{\2}\3"),
+    Replace(r"^(@?)####(.*)(\n$)", r"\1\\medskip\\textbf{\2}\\medskip\3"),
+    Replace(r"^(@?)###(.*)(\n$)", r"\1\\subsubsection*{\2}\3"),
+    Replace(r"^(@?)##(.*)(\n$)", r"\1\\subsection*{\2}\3"),
+    Replace(r"^(@?)#(.*)(\n$)", r"\1\\section*{\2}\3"),
 ]
 
 OPERATIONS_MATH = [
     # dash
     # Warning: must go earlier than russian text parsing
-    Operation(OpType.replace, r" \-\- ", r"\\text{ -- }"),
+    Replace(r" \-\- ", r"\\text{ -- }"),
 
     # wrap russian in text block:
-    Operation(OpType.replace, patterns.RUS_WORD, r"\\text{\1}\\allowbreak "),
+    Replace(patterns.RUS_WORD, r"\\text{\1}\\allowbreak "),
 
     # arrows
-    Operation(OpType.replace, "<=>", r"\\Leftrightarrow "),
-    Operation(OpType.replace, "<==>", r"\\Leftrightarrow "),
-    Operation(OpType.replace, "==>", r"\\Rightarrow "),
-    Operation(OpType.replace, "<==", r"\\Leftarrow "),
-    Operation(OpType.replace, "\-\->", r"\\rightarrow "),
-    Operation(OpType.replace, "<\-\-", r"\\leftarrow "),
+    Replace("<=>", r"\\Leftrightarrow "),
+    Replace("<==>", r"\\Leftrightarrow "),
+    Replace("==>", r"\\Rightarrow "),
+    Replace("<==", r"\\Leftarrow "),
+    Replace("\-\->", r"\\rightarrow "),
+    Replace("<\-\-", r"\\leftarrow "),
     
     # two kinds of not_equal operators
-    Operation(OpType.replace, "!=", r"\\neq "),
-    Operation(OpType.replace, "/=", r"\\neq "),
+    Replace("!=", r"\\neq "),
+    Replace("/=", r"\\neq "),
 
     # comparison operators
-    Operation(OpType.replace, "<=", r"\\le "),
-    Operation(OpType.replace, ">=", r"\\ge "),
+    Replace("<=", r"\\le "),
+    Replace(">=", r"\\ge "),
 
     # equals sign with three lines
-    Operation(OpType.replace, "==", r"\\equiv "),
+    Replace("==", r"\\equiv "),
     # equals symbol with ~ (isomorphism)
-    Operation(OpType.replace, patterns.ISOMORPHIC, "\\cong "),
+    Replace(patterns.ISOMORPHIC, "\\cong "),
 
     # ~ over a text
-    Operation(OpType.replace, patterns.TILDE_OVER, r"\\widetilde "),
+    Replace(patterns.TILDE_OVER, r"\\widetilde "),
     # line over a text
-    Operation(OpType.replace, patterns.OVERLINE, r"\\overline "),
+    Replace(patterns.OVERLINE, r"\\overline "),
 
     # plus-minus symbol
-    Operation(OpType.replace, r"\+\-", r"\\pm "),
-
-    # beautiful empty-set symbol:
-    Operation(OpType.replace, r"\\!O", r"\\varnothing"),
+    Replace(r"\+\-", r"\\pm "),
 
     # not operator. example: \!in == \not\in
-    Operation(OpType.replace, r"\\!E", r"\\nexists"),
-    Operation(OpType.replace, r"\\!", r"\\not\\"),
+    # also "empty set" and "not exist" symbols
+    Replace(r"\\!O", r"\\varnothing"),
+    Replace(r"\\!E", r"\\nexists"),
+    Replace(r"\\!", r"\\not\\"),
 
-    # division
-    # FIXME: временная заглушка. TODO: нормальное деление со вложенностью
-    Operation(OpType.replace, r"\[\[!([^][]*)\/([^][]*)\]\]", r"\\cfrac{\1}{\2}"),
-    Operation(OpType.replace, r"\[\[([^][]*)\/([^][]*)\]\]", r"\\frac{\1}{\2}"),
+    # division [[! numerator / denominator ]] and [[ numerator / denominator ]]
+    Replace(r"\[\[!([^][]*)\/([^][]*)\]\]", r"\\cfrac{\1}{\2}"),
+    Replace(r"\[\[([^][]*)\/([^][]*)\]\]", r"\\frac{\1}{\2}"),
 
     # star symbol: \* and multiply: *
-    Operation(OpType.replace, r"[^\\]\*", r"\\cdot "),
-    Operation(OpType.replace, r"\\\*", r"*"),
+    Replace(r"[^\\]\*", r"\\cdot "),
+    Replace(r"\\\*", r"*"),
 
     # open math mode in the begin of a line:
-    Operation(OpType.replace, r"^(#*)", r"\1" + target.MATH_OPEN),
+    Replace(r"^(#*)", r"\1" + target.MATH_OPEN),
     # close math mode in the end of a line:
-    Operation(OpType.replace, r"(\n$)", target.MATH_CLOSE + r"\1"),
+    Replace(r"(\n$)", target.MATH_CLOSE + r"\1"),
 
     # text entry:
-    Operation(OpType.replace, r"([^[]?)\[\{", r"\1\\text{"),
-    Operation(OpType.replace, r"\}\]([^]]?)", r"}\1"),
+    Replace(r"([^[]?)\[\{", r"\1\\text{"),
+    Replace(r"\}\]([^]]?)", r"}\1"),
 ]
 
 
-def main():
-    if len(sys.argv) != 2:
-        print("TODO: Help message")
-        exit(1)
+# TODO: get header path to the parameters
+def hw_to_tex(filename, output_file=None):
+    """None value for output_file means default output file name"""
 
-    source_path = sys.argv[1]
-    dest_path = re.sub(r"\." + FORMAT, r".tex", source_path)  # FIXME
+    if output_file is None:
+        output_file = re.sub(r"\." + FORMAT, r".tex", filename)
+
     header = resources.DEFAULT_HEADER
 
-    with open(dest_path, "w") as dest:
+    with open(output_file, "w") as dest:
         dest.write(header)
         dest.write("\n\\begin{document}\n")
 
-        with open(source_path, "r") as source:
+        with open(filename, "r") as source:
             for line in source.readlines():
                 for op in OPERATIONS_BEFORE_MATH:
-                    line = op.do(line)
+                    line = op.apply(line)
 
                 if line.startswith("@"):
                     # cut the raw_operator out
@@ -178,14 +177,23 @@ def main():
                     # if line isn't empty nor comment:`
 
                     for op in OPERATIONS_MATH:
-                        line = op.do(line)
+                        line = op.apply(line)
 
                 for op in OPERATIONS_AFTER_MATH:
-                    line = op.do(line)
+                    line = op.apply(line)
 
                 dest.write(line)
 
         dest.write("\n\\end{document}\n")
+
+
+def main():
+    try:
+        (filename, opts) = get_opts(sys.argv, opts_without_value=set(), opts_with_value=set("-o"))
+    except CLIParseError as err:
+        sys.stderr.write(err.message)
+        sys.stderr.write("\n")
+        exit(2)
 
 
 if __name__ == "__main__":
