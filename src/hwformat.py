@@ -1,18 +1,30 @@
 
+# TODO: code blocks and inline code like in markdown
+# TODO: \< and \>.
+#   usecase: linear span
+# TODO: easy matrices
+#   possible solution: use indentation
+# TODO: simple transposition
+#   possible solution: (1, 1, 1, 1)\^T = a column
+# mb TODO: \sub! <=> \subsetneq
 # TODO: priority system instead of dependency on order of commands.
 #   m.b. invent some new syntax to define operations
 # TODO: inline and multiline comments (example: /*  ... anything (m.b. several lines) ... */)
 # TODO: invent some cool syntax for operations on sets like \sum, \prod
 #   wishlist:
 #       \sum{x in A} == \sum\limits_{x \in A}
-#       \sum{x !in A} == \sum\limits_{x \!in A}
-#       \sum{j /= k} == \sum\limits_{x /= k}
-#       \sum{j in [0..n]} == \sum\limits_{x = 0}^{n}
-#       multiple counters
+#       \sum{x !in A} == \sum\limits_{x \not\in A}
+#       \sum{j /= k} == \sum\limits_{x \neq k}
+#       \sum{j in [a..b]} == \sum\limits_{x = a}^{b}
+#       multiple counters:
+#           \sum{x, y in [a..b]} == \sum\limits_{x, y \in A}
+#           \sum{x in A}{y in B} == \sum\limits_{x \in A; y \in B}
 # TODO: variables:
 #   examples:
 #       SA := \sum{x in A} foo(x)
 #   some kind of scopes (headers)
+# TODO: easy pictures insertion
+#   possible solution: like in markdown
 # TODO: convert to pdf
 #   possible solution: use subprocess
 # TODO: ability to modify headers.
@@ -31,7 +43,6 @@
 #   + m.b. that's ok.
 #   + interpret all spaces as spaces and don't let latex remove them.
 # TODO: installation for windows and linux
-# TODO: adopt for english language
 
 import re
 import sys
@@ -47,21 +58,27 @@ OPERATIONS_BEFORE_MATH = [
     Operation(OpType.replace, r"[ ]+$", ""),
 
     # comments:
-    # FIXME: works only in the beginning of the line
-    Operation(OpType.replace, "^//", target.LINE_COMMENT),
+    Operation(OpType.replace, "//.*$", ""),
 
     # skips:
     Operation(OpType.replace, r"^\-\-\-+\n$", r"@\\medskip\n"),
     Operation(OpType.replace, r"^===+\n$", r"@\\bigskip\n"),
 
-    # @\redef\foo\bar command
-    Operation(OpType.replace, r"\\redef(\\[a-zA-Z0-9]+)\{(.*)\}", r"\\undef\1 \\def\1{\2}"),
     # @\undef\foo command
     Operation(OpType.replace, r"\\undef(\\[a-zA-Z0-9]+)", r"\\let\1\\undefined"),
 
     # backslash: \\ and newline: \n
     Operation(OpType.replace, r"\\\\", r"\\textbackslash{}"),
     Operation(OpType.replace, r"\\n([^a-zA-Z])", r"\\\\\1"),
+
+    # emphasis: italic text: //text//
+    Operation(OpType.replace, r"\*/(.*?)/\*", r"\\textit{\1}"),
+
+    # bold text: **text**
+    Operation(OpType.replace, r"\*\*(.*?)\*\*", r"\\textbf{\1}"),
+
+    # underlined text: __text__
+    Operation(OpType.replace, r"__(.*?)__", r"\\underline{\1}")
 ]
 
 OPERATIONS_AFTER_MATH = [
@@ -75,15 +92,19 @@ OPERATIONS_AFTER_MATH = [
 OPERATIONS_MATH = [
     # dash
     # Warning: must go earlier than russian text parsing
-    Operation(OpType.replace, r" \-\- ", r"\\t{ -- }"),
+    Operation(OpType.replace, r" \-\- ", r"\\text{ -- }"),
 
     # wrap russian in text block:
     Operation(OpType.replace, patterns.RUS_WORD, r"\\text{\1}\\allowbreak "),
 
-    # WARNING: <=> should be parsed before => and <=
+    # arrows
     Operation(OpType.replace, "<=>", r"\\Leftrightarrow "),
-    Operation(OpType.replace, "=>", r"\\Rightarrow "),
-
+    Operation(OpType.replace, "<==>", r"\\Leftrightarrow "),
+    Operation(OpType.replace, "==>", r"\\Rightarrow "),
+    Operation(OpType.replace, "<==", r"\\Leftarrow "),
+    Operation(OpType.replace, "\-\->", r"\\rightarrow "),
+    Operation(OpType.replace, "<\-\-", r"\\leftarrow "),
+    
     # two kinds of not_equal operators
     Operation(OpType.replace, "!=", r"\\neq "),
     Operation(OpType.replace, "/=", r"\\neq "),
@@ -91,12 +112,6 @@ OPERATIONS_MATH = [
     # comparison operators
     Operation(OpType.replace, "<=", r"\\le "),
     Operation(OpType.replace, ">=", r"\\ge "),
-
-    # arrows
-    Operation(OpType.replace, "\-\->", r"\\rightarrow "),
-    Operation(OpType.replace, "<\-\-", r"\\leftarrow "),
-    Operation(OpType.replace, "\->", r"\\rightarrow "),
-    Operation(OpType.replace, "<\-", r"\\leftarrow "),
 
     # equals sign with three lines
     Operation(OpType.replace, "==", r"\\equiv "),
@@ -115,10 +130,12 @@ OPERATIONS_MATH = [
     Operation(OpType.replace, r"\\!O", r"\\varnothing"),
 
     # not operator. example: \!in == \not\in
+    Operation(OpType.replace, r"\\!E", r"\\nexists"),
     Operation(OpType.replace, r"\\!", r"\\not\\"),
 
     # division
     # FIXME: временная заглушка. TODO: нормальное деление со вложенностью
+    Operation(OpType.replace, r"\[\[!([^][]*)\/([^][]*)\]\]", r"\\cfrac{\1}{\2}"),
     Operation(OpType.replace, r"\[\[([^][]*)\/([^][]*)\]\]", r"\\frac{\1}{\2}"),
 
     # star symbol: \* and multiply: *
@@ -157,8 +174,8 @@ def main():
                 if line.startswith("@"):
                     # cut the raw_operator out
                     line = line[1:]
-                elif line != "\n" and not line.startswith(target.LINE_COMMENT):
-                    # if line isn't empty nor comment:
+                elif line != "\n":
+                    # if line isn't empty nor comment:`
 
                     for op in OPERATIONS_MATH:
                         line = op.do(line)

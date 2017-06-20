@@ -1,10 +1,10 @@
 HELP_MESSAGE = r"""
 TODO:
-Heeeeeelp!
+HELP_MESSAGE
 """
 
 DEFAULT_HEADER = r"""
-\documentclass[12pt,a4paper]{scrartcl}
+\documentclass[13pt,a4paper]{scrartcl}
 \usepackage[utf8]{inputenc}
 \usepackage[english,russian]{babel}
 \usepackage{indentfirst}
@@ -12,7 +12,7 @@ DEFAULT_HEADER = r"""
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{listings}
-
+\usepackage{array}
 
 % Некоторые множества
 
@@ -20,7 +20,7 @@ DEFAULT_HEADER = r"""
 \def\Z{\mathbb{Z}}
 \def\N{\mathbb{N}}
 \def\R{\mathbb{R}}
-
+\def\C{\mathbb{C}}
 
 % Бинарные операции над множествами
 
@@ -50,7 +50,7 @@ DEFAULT_HEADER = r"""
 
 % Перемножение (знак П)
 \def\mul{\prod}
-\def\mull#1#2#3{\mul\limits_{{#1}={#2}}^{#3}}
+\def\mull{\mul\limits}
 \def\muli#1#2{\mull{#1}{#2}{\inf}}
 \def\mulin#1#2{\mul\limits_{{#1} \in {#2}}}
 
@@ -80,6 +80,7 @@ DEFAULT_HEADER = r"""
 \def\g{\gamma}
 \def\l{\lambda}
 \def\e{\varepsilon}
+\def\eps{\varepsilon}
 \def\d{\delta}
 \def\m{\mu}
 \def\p{\phi}
