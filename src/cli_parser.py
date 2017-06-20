@@ -1,6 +1,4 @@
 
-import abc
-
 
 def get_opts(argv, options):
     """Collect command-line options in a dictionary"""

@@ -48,11 +48,13 @@ import re
 import sys
 import patterns
 import target
-import resources
+import resources as r
 from operations import Operation, Replace
 from cli_parser import get_opts, CLIParseError, CLIOption, CLIOptionWithValue
 
-FORMAT = "hw"
+
+FORMAT_NAME = "hw"
+
 
 OPERATIONS_BEFORE_MATH = [
     # trim extra spaces in the end of line:
@@ -157,9 +159,9 @@ def hw_to_tex(filename, output_file=None):
     """None value for output_file means default output file name"""
 
     if output_file is None:
-        output_file = re.sub(r"\." + FORMAT, r".tex", filename)
+        output_file = re.sub(r"\." + FORMAT_NAME, r".tex", filename)
 
-    header = resources.DEFAULT_HEADER
+    header = r.DEFAULT_HEADER
 
     with open(output_file, "w") as dest:
         dest.write(header)
@@ -188,17 +190,19 @@ def hw_to_tex(filename, output_file=None):
 
 
 def main():
+    help_option_names = ["h", "-h", "help", "-help", "--help", "?", "-?"]
+    if len(sys.argv) == 1 or (len(sys.argv) == 2 and sys.argv[1] in help_option_names):
+        print(r.HELP_MESSAGE)
+
     output_option = CLIOptionWithValue(["-o", "--output", "-output"])
+    header_option = CLIOptionWithValue(["-header", "--header"])
     try:
-        filename, opts = get_opts(sys.argv, [output_option])
+        filename, opts = get_opts(sys.argv, [output_option, header_option])
     except CLIParseError as err:
-        sys.stderr.write(err.message)
-        sys.stderr.write("\n")
+        sys.stderr.write("Parse error: " + err.message + "\n")
         exit(2)
-    # hw_to_tex(filename, output_option.value)
-    # x, y = 1, 2
-    # print(x)
-    # print(y)
+    else:
+        hw_to_tex(filename, output_option.value)
 
 
 if __name__ == "__main__":
