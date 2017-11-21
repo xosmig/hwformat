@@ -116,7 +116,7 @@ OPERATIONS_MATH = [
     # equals sign with three lines
     Replace("==", r"\\equiv "),
     # equals symbol with ~ (isomorphism)
-    Replace(patterns.ISOMORPHIC, "\\cong "),
+    Replace("~=", "\\cong "),
 
     # ~ over a text
     Replace(patterns.TILDE_OVER, r"\\widetilde "),
@@ -141,13 +141,16 @@ OPERATIONS_MATH = [
     Replace(r"\\\*", r"*"),
 
     # open math mode in the begin of a line:
-    Replace(r"^(#*)", r"\1" + target.MATH_OPEN),
+    Replace(r"^(#*)", r"\1\\("),
     # close math mode in the end of a line:
-    Replace(r"(\n$)", target.MATH_CLOSE + r"\1"),
+    Replace(r"(\n$)", r"\\)\1"),
 
     # text entry:
     Replace(r"([^[]?)\[\{", r"\1\\text{"),
     Replace(r"\}\]([^]]?)", r"}\1"),
+
+    # ranges:
+    Replace(r"{(.+?) in "+patterns.RANGE+"}", r"_{\1 = \2}^{\3}"),
 ]
 
 
