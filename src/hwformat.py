@@ -48,7 +48,6 @@ import sys
 import patterns
 import target
 import resources
-import settings
 from operations import *
 from cli_parser import *
 from utils import *
@@ -105,7 +104,7 @@ OPERATIONS_MATH = [
     Replace("<==", r"\\Leftarrow "),
     Replace("\-\->", r"\\rightarrow "),
     Replace("<\-\-", r"\\leftarrow "),
-    
+
     # two kinds of not_equal operators
     Replace("!=", r"\\neq "),
     Replace("/=", r"\\neq "),
@@ -158,7 +157,7 @@ def hw_to_tex(filename, output_file=None, header_file=None):
     If no header provided, the default one will be used."""
 
     if output_file is None:
-        output_file = change_extension(filename, settings.FORMAT_NAME, target.EXTENSION)
+        output_file = change_extension(filename, "hw", "tex")
 
     with open(output_file, "w") as dest:
         if header_file is None:
