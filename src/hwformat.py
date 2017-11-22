@@ -101,7 +101,7 @@ OPERATIONS_AFTER_MATH = [
     Replace(r"^(@?)#(.*)(\n$)", r"\1\\section*{\2}\3"),
 ]
 
-OPERATIONS_MATH = [
+OPERATIONS_MATH_RECURSIVE = [
     # arrows
     Replace("<=>", r"\\Leftrightarrow "),
     Replace("<==>", r"\\Leftrightarrow "),
@@ -139,7 +139,7 @@ OPERATIONS_MATH = [
 
     # division [[! numerator / denominator ]] and [[ numerator / denominator ]]
     Replace(r"\[\[!([^][]*)\/([^][]*)\]\]", r"\\cfrac{\1}{\2}"),
-    Replace(r"\[\[([^][]*)\/([^][]*)\]\]", r"\\frac{\1}{\2}"),
+    Replace(patterns.DIVISION, r"\\frac{\1}{\2}"),
 
     # star symbol: \* and multiply: *
     Replace(r"[^\\]\*", r"\\cdot "),
@@ -150,7 +150,7 @@ OPERATIONS_MATH = [
     Replace(r"\}\]([^]]?)", r"}\1"),
 
     # ranges:
-    Replace(r"{(.+?) in "+patterns.RANGE+"}", r"_{\1 = \2}^{\3}"),
+    Replace(r"{(.+?) in "+patterns.RANGE+r"}", r"_{\1 = \2}^{\3}"),
 ]
 
 
@@ -173,19 +173,23 @@ def hw_to_tex(filename, output_file=None, header_file=None):
         with open(filename, "r") as source:
             for line in source.readlines():
                 for op in OPERATIONS_BEFORE_MATH:
-                    line = op.apply(line)
+                    (line, ok) = op.apply(line)
 
                 if line.startswith("@"):
                     # cut the raw_operator out
                     line = line[1:]
                 elif line != "\n":
                     # if line isn't empty nor comment:`
-
-                    for op in OPERATIONS_MATH:
-                        line = op.apply(line)
+                    while True:
+                        op_performed = False
+                        for op in OPERATIONS_MATH_RECURSIVE:
+                            (line, ok) = op.apply(line)
+                            op_performed |= ok
+                        if not op_performed:
+                            break
 
                 for op in OPERATIONS_AFTER_MATH:
-                    line = op.apply(line)
+                    (line, ok) = op.apply(line)
 
                 dest.write(line)
 
@@ -209,6 +213,5 @@ def main():
     else:
         hw_to_tex(filename, output_option.value)
 
-
 if __name__ == "__main__":
-    main()
+   main()

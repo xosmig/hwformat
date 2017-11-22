@@ -1,6 +1,6 @@
 
 import abc
-import re
+import regex
 
 
 class Operation:
@@ -14,8 +14,9 @@ class Operation:
 
 class Replace(Operation):
     def __init__(self, pattern, dst):
-        self.pattern = re.compile(pattern)
+        self.pattern = regex.compile(pattern)
         self.dst = dst
 
     def apply(self, line):
-        return self.pattern.sub(self.dst, line)
+        (line, cnt) = self.pattern.subn(self.dst, line)
+        return (line, cnt > 0)

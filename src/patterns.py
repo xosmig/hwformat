@@ -8,3 +8,7 @@ TILDE_OVER = r"~\^"
 OVERLINE = r"\-\^"
 RUS_WORD = "([ ]?[-\(]*[а-яА-ЯёЁ]+[\-:!\.,\)]*[ ]?)"
 RANGE = r"\[(.*?)\s*\.\.\s*(.*?)\]"
+# __div_operand__ = r"\s*((?>(?!\]\]|/)+|(?R))*)\s*"
+__div_operand__ = "\s*((?>[^\[\]/]+|(?R))*)\s*"
+DIVISION = r"\[\["+__div_operand__+r"/"+__div_operand__+r"\]\]"
+
