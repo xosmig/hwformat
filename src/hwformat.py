@@ -54,6 +54,12 @@ from utils import *
 
 
 OPERATIONS_BEFORE_MATH = [
+    # headers:
+    Replace(r"^####(.*)$", r"@\\medskip\\textbf{\1}\\medskip"),
+    Replace(r"^###(.*)$", r"@\\subsubsection*{\1}"),
+    Replace(r"^##(.*)$", r"@\\subsection*{\1}"),
+    Replace(r"^#(.*)$", r"@\\section*{\1}"),
+
     # trim extra spaces in the end of line:
     Replace(r"[ ]+$", ""),
 
@@ -61,15 +67,15 @@ OPERATIONS_BEFORE_MATH = [
     Replace("//.*$", ""),
 
     # skips:
-    Replace(r"^\-\-\-+\n$", r"@\\medskip\n"),
-    Replace(r"^===+\n$", r"@\\bigskip\n"),
+    Replace(r"^\-\-\-+$", r"@\\medskip"),
+    Replace(r"^===+$", r"@\\bigskip"),
 
     # @\undef\foo command
     Replace(r"\\undef(\\[a-zA-Z0-9]+)", r"\\let\1\\undefined"),
 
     # backslash: \\ and newline: \n
     Replace(r"\\\\", r"\\textbackslash{}"),
-    Replace(r"\\n([^a-zA-Z])", r"\\\\\1"),
+    Replace(r"\\n(\s|$)", r"\\\\\1"),
 
     # emphasis: italic text: //text//
     Replace(r"\*/(.*?)/\*", r"\\textit{\1}"),
@@ -88,20 +94,7 @@ OPERATIONS_BEFORE_MATH = [
     Replace(patterns.RUS_WORD, r"\\text{\1}\\allowbreak "),
 ]
 
-OPERATIONS_AFTER_MATH = [
-    # open math mode in the begin of a line:
-    Replace(r"^(#*)", r"\1\\("),
-    # close math mode in the end of a line:
-    Replace(r"(\n$)", r"\\)\1"),
-
-    # headers:
-    Replace(r"^(@?)####(.*)(\n$)", r"\1\\medskip\\textbf{\2}\\medskip\3"),
-    Replace(r"^(@?)###(.*)(\n$)", r"\1\\subsubsection*{\2}\3"),
-    Replace(r"^(@?)##(.*)(\n$)", r"\1\\subsection*{\2}\3"),
-    Replace(r"^(@?)#(.*)(\n$)", r"\1\\section*{\2}\3"),
-]
-
-OPERATIONS_MATH = [
+OPERATIONS_MATH_ONCE = [
     # arrows
     Replace("<=>", r"\\Leftrightarrow "),
     Replace("<==>", r"\\Leftrightarrow "),
@@ -147,6 +140,9 @@ OPERATIONS_MATH = [
 
     # ranges:
     Replace(r"{([\w,;]+?) in "+patterns.RANGE+r"}", r"_{\1 = \2}^{\3}"),
+
+    # wrap every line in math mode
+    Replace(r"^(.*)$", r"\\(\1\\)"),
 ]
 
 OPERATIONS_MATH_RECURSIVE = [
@@ -180,7 +176,7 @@ def hw_to_tex(filename, output_file=None, header_file=None):
                     # cut the raw_operator out
                     line = line[1:]
                 elif line != "\n":
-                    # if line isn't empty nor comment:`
+                    # if line isn't empty nor comment
                     while True:
                         op_performed = False
                         for op in OPERATIONS_MATH_RECURSIVE:
@@ -188,10 +184,8 @@ def hw_to_tex(filename, output_file=None, header_file=None):
                             op_performed |= ok
                         if not op_performed:
                             break
-                    for op in OPERATIONS_MATH:
+                    for op in OPERATIONS_MATH_ONCE:
                         (line, ok) = op.apply(line)
-                for op in OPERATIONS_AFTER_MATH:
-                    (line, ok) = op.apply(line)
 
                 dest.write(line)
 
