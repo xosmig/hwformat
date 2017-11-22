@@ -150,7 +150,7 @@ OPERATIONS_MATH_RECURSIVE = [
     Replace(r"\}\]([^]]?)", r"}\1"),
 
     # ranges:
-    Replace(r"{(.+?) in "+patterns.RANGE+r"}", r"_{\1 = \2}^{\3}"),
+    Replace(r"{([\w,;]+?) in "+patterns.RANGE+r"}", r"_{\1 = \2}^{\3}"),
 ]
 
 
