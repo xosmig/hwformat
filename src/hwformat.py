@@ -9,25 +9,12 @@
 # mb TODO: \sub! <=> \subsetneq
 # TODO: priority system instead of dependency on order of commands.
 #   m.b. invent some new syntax to define operations
-# TODO: inline and multiline comments (example: /*  ... anything (m.b. several lines) ... */)
-# TODO: invent some cool syntax for operations on sets like \sum, \prod
-#   wishlist:
-#       \sum{x in A} == \sum\limits_{x \in A}
-#       \sum{x !in A} == \sum\limits_{x \not\in A}
-#       \sum{j /= k} == \sum\limits_{x \neq k}
-#       \sum{j in [a..b]} == \sum\limits_{x = a}^{b}
-#       multiple counters:
-#           \sum{x, y in [a..b]} == \sum\limits_{x, y \in A}
-#           \sum{x in A}{y in B} == \sum\limits_{x \in A; y \in B}
-# TODO: variables:
-#   examples:
-#       SA := \sum{x in A} foo(x)
-#   some kind of scopes (headers)
+# TODO: multiline comments (example: /*  ... anything (m.b. several lines) ... */)
 # TODO: easy pictures insertion
 #   possible solution: like in markdown
 # TODO: convert to pdf
 #   possible solution: use subprocess
-# TODO: ability to modify headers.
+# TODO: ability to choose the header.
 # TODO: parse command line arguments
 #   + -t --tex      - produce only .tex file (and only .pdf file otherwise)
 #   + -o --output   - specify an output file
@@ -37,12 +24,11 @@
 # FIXME: Now it's very hard to deal with latex error. It refers to a line in .tex file.
 # TODO: example with a definition of all features
 # TODO: good default header
-# TODO: inline comments
 # FIXME: problem with spaces in math mode
 #   possible solutions:
 #   + m.b. that's ok.
 #   + interpret all spaces as spaces and don't let latex remove them.
-# TODO: installation for windows and linux
+# TODO: installation for windows and mac
 
 import sys
 import patterns
@@ -70,8 +56,10 @@ OPERATIONS_BEFORE_MATH = [
     Replace(r"^\-\-\-+$", r"@\\medskip"),
     Replace(r"^===+$", r"@\\bigskip"),
 
-    # @\undef\foo command
-    Replace(r"\\undef(\\[a-zA-Z0-9]+)", r"\\let\1\\undefined"),
+    # \def \foo = command
+    Replace(r"^\\def\s+([a-zA-Z0-9]+)\s*=\s*(.*)$", r"@\\def\\\1{\2}"),
+    # \undef\foo
+    Replace(r"\\undef\s*(\\[a-zA-Z0-9]+)", r"\\let\1\\undefined"),
 
     # backslash: \\ and newline: \n
     Replace(r"\\\\", r"\\textbackslash{}"),
