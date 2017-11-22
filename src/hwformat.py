@@ -101,7 +101,7 @@ OPERATIONS_AFTER_MATH = [
     Replace(r"^(@?)#(.*)(\n$)", r"\1\\section*{\2}\3"),
 ]
 
-OPERATIONS_MATH_RECURSIVE = [
+OPERATIONS_MATH = [
     # arrows
     Replace("<=>", r"\\Leftrightarrow "),
     Replace("<==>", r"\\Leftrightarrow "),
@@ -137,10 +137,6 @@ OPERATIONS_MATH_RECURSIVE = [
     Replace(r"\\!E", r"\\nexists"),
     Replace(r"\\!", r"\\not\\"),
 
-    # division [[! numerator / denominator ]] and [[ numerator / denominator ]]
-    Replace(r"\[\[!([^][]*)\/([^][]*)\]\]", r"\\cfrac{\1}{\2}"),
-    Replace(patterns.DIVISION, r"\\frac{\1}{\2}"),
-
     # star symbol: \* and multiply: *
     Replace(r"[^\\]\*", r"\\cdot "),
     Replace(r"\\\*", r"*"),
@@ -151,6 +147,11 @@ OPERATIONS_MATH_RECURSIVE = [
 
     # ranges:
     Replace(r"{([\w,;]+?) in "+patterns.RANGE+r"}", r"_{\1 = \2}^{\3}"),
+]
+
+OPERATIONS_MATH_RECURSIVE = [
+    # fractions [[ numerator / denominator ]]
+    Replace(patterns.DIVISION, r"\\frac{\1}{\2}"),
 ]
 
 
@@ -187,7 +188,8 @@ def hw_to_tex(filename, output_file=None, header_file=None):
                             op_performed |= ok
                         if not op_performed:
                             break
-
+                    for op in OPERATIONS_MATH:
+                        (line, ok) = op.apply(line)
                 for op in OPERATIONS_AFTER_MATH:
                     (line, ok) = op.apply(line)
 
