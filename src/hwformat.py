@@ -79,9 +79,21 @@ OPERATIONS_BEFORE_MATH = [
 
     # underlined text: __text__
     Replace(r"__(.*?)__", r"\\underline{\1}"),
+
+    # dash
+    # Warning: must go earlier than russian text parsing
+    Replace(r" \-\- ", r"\\text{ -- }"),
+
+    # wrap russian in text block:
+    Replace(patterns.RUS_WORD, r"\\text{\1}\\allowbreak "),
 ]
 
 OPERATIONS_AFTER_MATH = [
+    # open math mode in the begin of a line:
+    Replace(r"^(#*)", r"\1\\("),
+    # close math mode in the end of a line:
+    Replace(r"(\n$)", r"\\)\1"),
+
     # headers:
     Replace(r"^(@?)####(.*)(\n$)", r"\1\\medskip\\textbf{\2}\\medskip\3"),
     Replace(r"^(@?)###(.*)(\n$)", r"\1\\subsubsection*{\2}\3"),
@@ -90,13 +102,6 @@ OPERATIONS_AFTER_MATH = [
 ]
 
 OPERATIONS_MATH = [
-    # dash
-    # Warning: must go earlier than russian text parsing
-    Replace(r" \-\- ", r"\\text{ -- }"),
-
-    # wrap russian in text block:
-    Replace(patterns.RUS_WORD, r"\\text{\1}\\allowbreak "),
-
     # arrows
     Replace("<=>", r"\\Leftrightarrow "),
     Replace("<==>", r"\\Leftrightarrow "),
@@ -139,11 +144,6 @@ OPERATIONS_MATH = [
     # star symbol: \* and multiply: *
     Replace(r"[^\\]\*", r"\\cdot "),
     Replace(r"\\\*", r"*"),
-
-    # open math mode in the begin of a line:
-    Replace(r"^(#*)", r"\1\\("),
-    # close math mode in the end of a line:
-    Replace(r"(\n$)", r"\\)\1"),
 
     # text entry:
     Replace(r"([^[]?)\[\{", r"\1\\text{"),
