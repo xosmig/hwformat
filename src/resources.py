@@ -44,15 +44,12 @@ DEFAULT_HEADER = r"""
 
 % Сумма
 \def\suml{\sum\limits}
-\def\sumfor#1#2#3{\suml_{{#1}={#2}}^{#3}}
-\def\sumi#1#2{\sumfor{#1}{#2}{\inf}}
-\def\sumin#1#2{\suml_{{#1} \in {#2}}}
+
+% Сумма
+\def\intl{\int\limits}
 
 % Перемножение (знак П)
-\def\mul{\prod}
-\def\mull{\mul\limits}
-\def\muli#1#2{\mull{#1}{#2}{\inf}}
-\def\mulin#1#2{\mul\limits_{{#1} \in {#2}}}
+\def\prodl{\mul\limits}
 
 % Объединение
 \def\U{\bigcup}

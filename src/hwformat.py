@@ -57,9 +57,9 @@ OPERATIONS_BEFORE_MATH = [
     Replace(r"^===+$", r"@\\bigskip"),
 
     # \def \foo = command
-    Replace(r"^\\def\s+([a-zA-Z0-9]+)\s*=\s*(.*)$", r"@\\def\\\1{\2}"),
+    Replace(r"^\s*\\def\s+\\?([a-zA-Z0-9#]+)\s*=\s*(.*)$", r"@\\def\\\1{\2}"),
     # \undef\foo
-    Replace(r"\\undef\s*(\\[a-zA-Z0-9]+)", r"\\let\1\\undefined"),
+    Replace(r"^\s*\\undef\s*\\?([a-zA-Z0-9]+)\s*$", r"@\\let\\\1\\undefined"),
 
     # backslash: \\ and newline: \n
     Replace(r"\\\\", r"\\textbackslash{}"),
@@ -127,7 +127,8 @@ OPERATIONS_MATH_ONCE = [
     Replace(r"\}\]([^]]?)", r"}\1"),
 
     # ranges:
-    Replace(r"{([\w,;]+?) in "+patterns.RANGE+r"}", r"_{\1 = \2}^{\3}"),
+    Replace(r"{([\w,;]+) in "+patterns.RANGE+r"}", r"_{\1 = \2}^{\3}"),
+    Replace(r"{([\w,;]+) in (\w+)}", r"_{\1 = 1}^{\2}"),
 
     # wrap every line in math mode
     Replace(r"^(.*)$", r"\\(\1\\)"),
