@@ -122,10 +122,6 @@ OPERATIONS_MATH_ONCE = [
     Replace(r"[^\\]\*", r"\\cdot "),
     Replace(r"\\\*", r"*"),
 
-    # text entry:
-    Replace(r"([^[]?)\[\{", r"\1\\text{"),
-    Replace(r"\}\]([^]]?)", r"}\1"),
-
     # ranges:
     Replace(r"{([\w,;]+) in "+patterns.RANGE+r"}", r"_{\1 = \2}^{\3}"),
     Replace(r"{([\w,;]+) in (\w+)}", r"_{\1 = 1}^{\2}"),
