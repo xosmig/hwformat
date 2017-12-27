@@ -22,5 +22,5 @@ pdflatex "$tex" &&
 pdflatex "$tex" &&
 aux="${file%.hw}.aux" &&
 log="${file%.hw}.log" &&
-rm "$log" "$aux" &&
+rm -f "$log" "$aux" &&
 ok || fail

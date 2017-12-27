@@ -18,7 +18,9 @@ function fail {
 }
 
 dir="$(dirname "$(realpath "$0")")" &&
-target="$HOME/.local/bin/hwformat" &&
+bin="$HOME/.local/bin" &&
+mkdir -p "$bin" &&
+target="$bin/hwformat" &&
 source="$dir/ubuntu_run_script_template.sh" &&
 cp "$source" "$target" &&
 sed -i "s|PATH_TO_SRC|$dir/src|g" "$target" &&
