@@ -1,6 +1,5 @@
 *.aux
 *.log
-*.tex
 workspace.xml
 tasks.xml
 build

@@ -1,0 +1,211 @@
+
+\documentclass[13pt,a4paper]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{array}
+
+% Некоторые множества
+
+\def\Q{\mathbb{Q}}
+\def\Z{\mathbb{Z}}
+\def\N{\mathbb{N}}
+\def\R{\mathbb{R}}
+\def\C{\mathbb{C}}
+
+% Бинарные операции над множествами
+
+% xor
+\def\xor{\oplus}
+% объединение
+\def\u{\cup}
+% объединение
+\def\i{\cap}
+
+
+% Комбинаторика
+
+% Биномиальный коэффициент : (из n  по k)
+\def\set{\binom}
+% ((из n по k))
+\def\mset#1#2{\ensuremath{\left(\kern-.3em\left(\genfrac{}{}{0pt}{}{#1}{#2}\right)\kern-.3em\right)}}
+
+
+% Опеации над несколькими множествами
+
+% Сумма
+\def\suml{\sum\limits}
+
+% Сумма
+\def\intl{\int\limits}
+
+% Перемножение (знак П)
+\def\prodl{\prod\limits}
+
+% Объединение
+\def\U{\bigcup}
+\def\Ul#1#2#3{\U\limits_{{#1}={#2}}^{#3}}
+\def\Ui#1#2{\Ul{#1}{#2}{\inf}}
+\def\Uin#1#2{\U\limits_{{#1} \in {#2}}}
+
+% Пересечение
+\def\I{\bigcap}
+\def\Il#1#2#3{\I\limits_{{#1}={#2}}^{#3}}
+\def\Ii#1#2{\Il{#1}{#2}{\inf}}
+\def\Iin#1#2{\I\limits_{{#1} \in {#2}}}
+
+
+% Разделители
+
+\def\ms{\medskip}
+\def\bs{\bigskip}
+
+
+% Греческий алфавит
+
+\def\a{\alpha}
+\def\b{\beta}
+\def\g{\gamma}
+\def\l{\lambda}
+\def\e{\varepsilon}
+\def\eps{\varepsilon}
+\def\d{\delta}
+\def\m{\mu}
+\def\p{\phi}
+
+\def\L{\Lambda}
+\def\D{\Delta}
+\def\M{\Mu}
+\def\P{\Phi}
+
+
+% Кванторы
+
+\def\A{\forall}
+\def\E{\exists\;}
+
+
+% Что-то еще
+
+\def\inf{\t{+}\infty}    % +inf
+\def\O{\mathcal{O}}      %
+\def\t{\text}
+\def\bs{\textbackslash{}}
+
+
+\begin{document}
+
+\def\s{\sigma}
+\def\a{\alpha}
+\def\X{\overline{X}}
+\def\Y{\overline{Y}}
+\def\E{\mathbb{E}}
+
+\section*{\text{ Домашнее }\allowbreak \text{задание }\allowbreak \text{по }\allowbreak \text{статистике }\allowbreak 03.11.17}
+
+\subsection*{ 1.}
+
+\(C_0 = 6,\)
+\(C_1 = 7,\)
+\(C_2 = 6,\)
+\(C_3 = 6,\)
+\(C_4 = 7,\)
+\(C_5 = 6,\)
+\(C_6 = 6,\)
+\(C_7 = 6\)
+
+\(k = 8; n = \suml_{i = 0}^{7} C_i = 50\)
+
+\def\p{1 / 8}
+\def\bug{C_i / 50}
+
+\(T = 50\cdot  \suml_{i = 0}^{7} \dfrac{(\bug  - \p)^2 }{\p } = 0.24\)
+
+\(T \sim  \chi^2(k - 1) = \chi^2(7)\)
+
+\(pvalue = 1 - F_{\chi^2(7)}(T) \approx  0.999953 > 0.05\)
+\(\Rightarrow \text{ гипотеза }\allowbreak \text{не }\allowbreak \text{отвергается }\allowbreak \text{при }\allowbreak \alpha = 0.05\)
+
+\subsection*{ 2.}
+
+\(C_0 = 60, C_1 = 140, C_2 = 125, C_3 = 155\)
+
+\(k = 4; n = 480; \overline X = \frac{960 }{480}\)
+
+\(H_0:\text{ генеральная }\allowbreak \text{совокупность }\allowbreak \xi \sim  P(\overline X) = P(2) \\\)
+
+\(P_0 = P_{H_0}[ \xi = 0 ] = 0.135\)
+
+\(P_1 = P_{H_0}[ \xi = 1 ] = 0.271\)
+
+\(P_2 = P_{H_0}[ \xi = 2 ] = 0.271\)
+
+\(P_3 = P_{H_0}[ \xi \ge  3 ] = 0.323\)
+
+\def\bug{C_i / 480}
+
+\(T = 480\cdot  \suml_{i = 0}^{3} \dfrac{(\bug - P_i)^2 }{P_i } = 1.31\)
+
+\(T \sim  \chi^2(k - 2) = \chi^2(2),\text{ т.}\allowbreak \text{к. }\allowbreak \text{в }\allowbreak \text{качестве }\allowbreak \text{параметра }\allowbreak \text{использовалась}\allowbreak \)
+\(\text{оценка }\allowbreak \text{максимального }\allowbreak \text{правдоподобия}\allowbreak \)
+
+\(pvalue = 1 - F_{\chi^2(2)}(1.31) = 0.52 > 0.05\)
+\(\Rightarrow \text{ гипотеза }\allowbreak \text{не }\allowbreak \text{отвергается }\allowbreak \text{при }\allowbreak \alpha = 0.05\)
+
+\subsection*{ 3.}
+
+\def\X{\overline{X}}
+\def\Y{\overline{Y}}
+\def\E{\mathbb{E}}
+
+\(\X = 39217, S_X = 12210, n_X = n = 100\)
+
+\(\Y = 43121, S_Y = 17020, n_Y = n = 100\)
+
+\(H_0: \E X = \E Y\)
+
+\(H_1: \E X \neq  \E Y\)
+
+\(T = \dfrac{\X - \Y }{S_{X - Y} } \sim  t(df)\)
+
+\medskip
+\def\num{(S_X^2 / n_X + S_2^2 / n_Y)^2}
+\def\denum{(S_X^2 / n_X)^2 / (n_X - 1) + (S_Y^2 / n_Y)^2 / (n_Y - 1)}
+\(df = \dfrac{\num }{\denum }\)
+
+\(\text{Поскольку }\allowbreak n_X = n_Y = n, df = \dfrac{(S_X^2 + S_Y^2)^2 (n - 1) }{S_X^4 + S_Y^2 }\)
+\(= \dfrac{99\cdot  (12210^2 + 17020^2)^2 }{12210^4 + 17020^4 } = 179.56\)
+\medskip
+
+\(S_{X - Y} = \sqrt{ \dfrac{S_X^2 }{n_X } + \dfrac{S_Y^2 }{n_Y } }\)
+\(= \sqrt{ \dfrac{12210^2 }{100 } + \dfrac{17020^2 }{100 } }\)
+\(= 2094\)
+\medskip
+
+\(T = \dfrac{39217 - 43121 }{2094 } = -1.864\)
+
+\medskip
+\(T\text{ попадает }\allowbreak \text{в }\allowbreak 99\%\text{-процентный }\allowbreak \text{доверительный }\allowbreak \text{интервал }\allowbreak = (-2.6; 2.6)\)
+
+\(\text{Таким }\allowbreak \text{образом, }\allowbreak \text{гипотеза }\allowbreak \text{не }\allowbreak \text{отвергается}\allowbreak \)
+
+\subsection*{ 4\text{ (метод }\allowbreak \text{генерации }\allowbreak \text{нормальных }\allowbreak \text{распределений }\allowbreak \text{с }\allowbreak \text{заданной }\allowbreak \text{корреляцией)}\allowbreak }
+
+\def\tmp{\sqrt{1 - \rho^2}}
+
+\(X \sim  N(0, 1),\)
+\(Z \sim  N(0, 1),\)
+\(Y = \rho X + \tmp Z\)
+
+\(r(X, Y)\)
+\(= \frac{cov(X, Y) }{\sigma X \sigma Y }\)
+\(= cov(X, Y)\)
+\(= cov(X, \rho X) + cov(X, \tmp Z) \\\)
+\(= \rho\cdot  cov(X, X)\)
+\(= \rho\)
+
+\end{document}
