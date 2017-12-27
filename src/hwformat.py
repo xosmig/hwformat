@@ -88,8 +88,9 @@ OPERATIONS_MATH_ONCE = [
     Replace("<==>", r"\\Leftrightarrow "),
     Replace("==>", r"\\Rightarrow "),
     Replace("<==", r"\\Leftarrow "),
-    Replace("\-\->", r"\\rightarrow "),
-    Replace("<\-\-", r"\\leftarrow "),
+    Replace("-->", r"\\rightarrow "),
+    Replace("<--", r"\\leftarrow "),
+    Replace("--(\w+)->", r"\\xrightarrow[\hspace{12pt}]{\1} "),
 
     # two kinds of not_equal operators
     Replace("!=", r"\\neq "),
@@ -102,12 +103,16 @@ OPERATIONS_MATH_ONCE = [
     # equals sign with three lines
     Replace("==", r"\\equiv "),
     # equals symbol with ~ (isomorphism)
-    Replace("~=", "\\cong "),
+    Replace("=~=", r"\\cong "),
+    # approximately equal sign
+    Replace("~=", r"\\approx "),
 
-    # ~ over a text
-    Replace(patterns.TILDE_OVER, r"\\widetilde "),
-    # line over a text
-    Replace(patterns.OVERLINE, r"\\overline "),
+    Replace(r"~~", r"\\sim "),
+
+    # tilde over the text
+    Replace(r"~\^", r"\\widetilde "),
+    # line over the text
+    Replace(r"\-\^", r"\\overline "),
 
     # plus-minus symbol
     Replace(r"\+\-", r"\\pm "),
@@ -133,6 +138,7 @@ OPERATIONS_MATH_ONCE = [
 
 OPERATIONS_MATH_RECURSIVE = [
     # fractions [[ numerator / denominator ]]
+    Replace(patterns.DIVISION_BIG, r"\\dfrac{\1}{\2}"),
     Replace(patterns.DIVISION, r"\\frac{\1}{\2}"),
 ]
 

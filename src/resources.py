@@ -49,7 +49,7 @@ DEFAULT_HEADER = r"""
 \def\intl{\int\limits}
 
 % Перемножение (знак П)
-\def\prodl{\mul\limits}
+\def\prodl{\prod\limits}
 
 % Объединение
 \def\U{\bigcup}
