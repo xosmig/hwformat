@@ -3,7 +3,9 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        echo 'Building...'
+        sh './install_ubuntu.sh'
+        sh 'cd example'
+        sh 'hwformat bad_example.hw'
       }
     }
   }
